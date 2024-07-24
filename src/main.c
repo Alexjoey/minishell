@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/24 16:05:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/07/24 16:06:55 by amylle           ###   ########.fr       */
+/*   Created: 2024/07/24 16:17:10 by amylle            #+#    #+#             */
+/*   Updated: 2024/07/24 16:20:53 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-#define MINITALK_H
+#include "../inc/minitalk.h"
+#include <readline/history.h>
 
-# include "../libft/inc/libft.h"
+int	main(int argc, char **argv, char **envp)
+{
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	char	*line;
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-#endif
+	while (1)
+	{
+	line = readline("minishell ~> ");
+	add_history(line);
+	free (line);
+	}
+}

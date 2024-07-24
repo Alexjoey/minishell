@@ -14,15 +14,15 @@ SRC_DIR	= ./src
 INC_DIR	= ./inc
 OBJ_DIR	= ./obj
 
-SRCS	= 
+SRCS	= src/main.c
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC		= cc
 CFLAGS	= -Wextra -Wall -Werror
-INCLUDE	= -I$(INC_DIR) -Llibft -lft
+INCLUDE	= -I$(INC_DIR) -Llibft -lft -lreadline -lncurses
 LIBFT	= libft/libft.a
 RM		= rm -rf
 
-NAME	= minitalk
+NAME	= minishell
 
 #---------------------------Messages--------------------------------------------
 
