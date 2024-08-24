@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minitalk.h"
+#include "./src/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
