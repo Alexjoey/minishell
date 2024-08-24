@@ -19,6 +19,11 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	char	*line;
 
+	if (argc != 1)
+	{
+		printf("This program does not accept any input\n");
+		return (0);
+	}
 	while (1)
 	{
 	line = readline("minishell ~> ");
