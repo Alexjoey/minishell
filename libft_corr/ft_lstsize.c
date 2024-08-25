@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 16:18:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/08/26 00:13:49 by tlaverge         ###   ########.fr       */
+/*   Created: 2023/10/19 15:18:09 by tlaverge          #+#    #+#             */
+/*   Updated: 2023/10/19 15:23:19 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "libft.h"
 
-# include "../libft_corr/libft.h"
+int
+	ft_lstsize(t_list *lst)
+{
+	size_t	i;
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-
-#endif
+	i = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}

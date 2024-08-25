@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 16:18:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/08/26 00:13:49 by tlaverge         ###   ########.fr       */
+/*   Created: 2023/10/10 14:48:17 by tlaverge          #+#    #+#             */
+/*   Updated: 2023/10/19 15:38:47 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "libft.h"
 
-# include "../libft_corr/libft.h"
+char	*ft_strdup(const char *s1)
+{
+	char	*ret;
+	size_t	len;
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-
-#endif
+	len = ft_strlen(s1);
+	ret = malloc(sizeof(char) * (len + 1));
+	if (!ret)
+		return (0);
+	ft_strlcpy(ret, s1, len + 1);
+	return (ret);
+}

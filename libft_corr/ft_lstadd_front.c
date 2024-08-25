@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 16:18:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/08/26 00:13:49 by tlaverge         ###   ########.fr       */
+/*   Created: 2023/10/19 15:17:53 by tlaverge          #+#    #+#             */
+/*   Updated: 2023/10/19 15:20:50 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "libft.h"
 
-# include "../libft_corr/libft.h"
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-
-#endif
+void
+	ft_lstadd_front(t_list **alst, t_list *new)
+{
+	if (alst)
+	{
+		if (*alst)
+			new->next = *alst;
+		*alst = new;
+	}
+}

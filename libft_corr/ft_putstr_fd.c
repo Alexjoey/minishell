@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 16:18:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/08/26 00:13:49 by tlaverge         ###   ########.fr       */
+/*   Created: 2023/10/16 13:07:43 by tlaverge          #+#    #+#             */
+/*   Updated: 2023/10/19 15:37:27 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "libft.h"
 
-# include "../libft_corr/libft.h"
-
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-
-#endif
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (!s)
+		return ;
+	write(fd, s, ft_strlen(s));
+}

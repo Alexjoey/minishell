@@ -1,23 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 16:18:57 by amylle            #+#    #+#             */
-/*   Updated: 2024/08/26 00:13:49 by tlaverge         ###   ########.fr       */
+/*   Created: 2023/10/23 14:44:30 by tlaverge          #+#    #+#             */
+/*   Updated: 2023/10/26 14:10:47 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-# include "../libft_corr/libft.h"
+# include <stdarg.h>
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+int	ft_printf(const char *str, ...);
 
+int	ft_printchar(int c);
+
+int	ft_printstr(char *str);
+
+int	ft_print_ptr(unsigned long long ptr);
+
+int	ft_printnbr(int nbr);
+
+int	ft_print_unsigned(unsigned int nbr);
+
+int	ft_print_hex(unsigned int nbr, const char c);
+
+int	ft_printpercent(void);
 
 #endif
