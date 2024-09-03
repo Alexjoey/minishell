@@ -10,15 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./src/minishell.h"
+#include "src/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argc;
-	(void)argv;
-	(void)envp;
 	char	*line;
 
+	(void)argv;
 	if (argc != 1)
 	{
 		printf("This program does not accept any input\n");
@@ -28,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 	line = readline("minishell ~> ");
 	add_history(line);
+	execute(line, envp);
 	free (line);
 	}
 }

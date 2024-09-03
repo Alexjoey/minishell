@@ -14,7 +14,7 @@ SRC_DIR	= ./src
 INC_DIR	= ./inc
 OBJ_DIR	= ./obj
 
-SRCS	= src/main.c
+SRCS	= main.c src/executor/executor.c
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC		= cc
 CFLAGS	= -Wextra -Wall -Werror
