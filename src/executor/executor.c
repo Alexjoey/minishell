@@ -17,20 +17,20 @@ void	free_array(char **array)
 	int	i;
 
 	i = -1;
-	while(array[++i])
-		free (array[i]);
-	free (array);
+	while (array[++i])
+		free(array[i]);
+	free(array);
 }
 
 char	**get_paths(char **envp)
 {
-	int	i;
-	char *path;
-	char **splitpath;
+	int		i;
+	char	*path;
+	char	**splitpath;
 
 	i = -1;
 	path = NULL;
-	while(envp[++i])
+	while (envp[++i])
 	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
 		{
@@ -59,7 +59,7 @@ int	do_cmd(char *line, char **envp)
 	else
 	{
 		paths = get_paths(envp);
-		while(paths[++i])
+		while (paths[++i])
 		{
 			tmp = ft_strjoin(paths[i], "/");
 			pathcmd = ft_strjoin(tmp, splitline[0]);
