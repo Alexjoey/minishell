@@ -43,7 +43,7 @@ char	**get_paths(char **envp)
 	return (splitpath);
 }
 
-int	execute(char *line, char **envp)
+int	do_cmd(char *line, char **envp)
 {
 	char	**splitline;
 	char	**paths;
@@ -65,13 +65,22 @@ int	execute(char *line, char **envp)
 			pathcmd = ft_strjoin(tmp, splitline[0]);
 			free (tmp);
 			if (!access(pathcmd, F_OK))
-			{
 				execve(pathcmd, splitline, envp);
-				printf("yo1\n");
-			}
 			free(pathcmd);
 		}
 	}
 	free_array(splitline);
+	return (0);
+}
+
+int	execute(char *line, char **envp)
+{
+	int		pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+		do_cmd(line, envp);
+	waitpid(pid, &status, 0);
 	return (0);
 }

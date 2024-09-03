@@ -12,6 +12,8 @@
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
+# include <sys/types.h>
+# include <sys/wait.h>
 
 int		execute(char *line, char **envp);
 char	**get_paths(char **envp);
