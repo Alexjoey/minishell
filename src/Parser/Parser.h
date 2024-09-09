@@ -76,5 +76,9 @@ bool	parser_input(char *line);
 void	p_line_s_init(t_pars_start *line_i, char *line);
 bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, int idx);
 
+void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
+void	p_struct_pipe_init(t_pars_start *line_i, t_pipe *pipe_i);
+void	p_struct_redir_init(t_pars_start *line_i);
+
 
 #endif

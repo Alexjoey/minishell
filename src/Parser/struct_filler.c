@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/06 04:07:06 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/08 20:19:38 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, int idx)
 	static t_args	prev_arg;
 	t_args			*curr;
 
+	curr = ft_calloc(1, sizeof(t_args *));
+	if (!curr)
+		return (NULL);
+	p_struct_arg_init(NULL, curr);
 	if (line_i->x_args <= idx)
 		line_i->x_args = idx;
 	curr = line_i->args_start;

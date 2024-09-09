@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:10:14 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/06 04:06:43 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/08 20:17:48 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 	arg_s is a shortcut so i dont need to fucking type the 
 	whole struct all the time ;/
 */
-static void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
+void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
 {
 	t_args	*arg_s;
 
@@ -36,7 +36,7 @@ static void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
 
 }
 
-static void	p_struct_pipe_init(t_pars_start *line_i, t_pipe *pipe_i)
+void	p_struct_pipe_init(t_pars_start *line_i, t_pipe *pipe_i)
 {
 	t_pipe	*pp_s;
 
@@ -52,7 +52,7 @@ static void	p_struct_pipe_init(t_pars_start *line_i, t_pipe *pipe_i)
 
 }
 
-static void	p_struct_redir_init(t_pars_start *line_i)
+void	p_struct_redir_init(t_pars_start *line_i)
 {
 
 }
