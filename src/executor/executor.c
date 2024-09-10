@@ -27,19 +27,25 @@ char	**get_paths(char **envp)
 	int		i;
 	char	*path;
 	char	**splitpath;
+	char	*tmp;
 
 	i = -1;
 	path = NULL;
 	while (envp[++i])
-	{
 		if (!ft_strncmp(envp[i], "PATH=", 5))
-		{
 			path = ft_substr(envp[i], 6, ft_strlen(envp[i]) - 6);
-			break ;
-		}
-	}
 	splitpath = ft_split(path, ':');
 	free (path);
+	i = -1;
+	while (splitpath[++i])
+	{
+		if (splitpath[i][ft_strlen(splitpath[i]) - 1] != '/')
+		{
+			tmp = ft_strjoin(splitpath[i], "/");
+			free (splitpath[i]);
+			splitpath[i] = tmp;
+		}
+	}
 	return (splitpath);
 }
 
@@ -48,29 +54,28 @@ int	do_cmd(char *line, char **envp)
 	char	**splitline;
 	char	**paths;
 	char	*pathcmd;
-	char	*tmp;
 	int		i;
 
 	i = -1;
 	pathcmd = NULL;
 	splitline = ft_split(line, ' ');
 	if (!access(splitline[0], F_OK))
-		execve(splitline[0], splitline, envp);
-	else
 	{
-		paths = get_paths(envp);
-		while (paths[++i])
-		{
-			tmp = ft_strjoin(paths[i], "/");
-			pathcmd = ft_strjoin(tmp, splitline[0]);
-			free (tmp);
-			if (!access(pathcmd, F_OK))
-				execve(pathcmd, splitline, envp);
-			free(pathcmd);
-		}
+		execve(splitline[0], splitline, envp);
+		exit (0);
 	}
+	paths = get_paths(envp);
+	while (paths[++i])
+	{
+		pathcmd = ft_strjoin(paths[i], splitline[0]);
+		if (!access(pathcmd, F_OK))
+			execve(pathcmd, splitline, envp);
+		free(pathcmd);
+	}
+	printf("minishell: command not found: %s\n", splitline[0]);
+	free_array(paths);
 	free_array(splitline);
-	return (0);
+	exit (127);
 }
 
 int	execute(char *line, char **envp)
