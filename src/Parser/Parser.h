@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/16 00:34:54 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/16 00:49:34 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 typedef struct t_pars_start	t_pars_start;
 typedef struct t_args		t_args;
-
 
 /*
 	str			= Raw split data from Readline
