@@ -1,22 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
+/*   Updated: 2024/09/16 00:34:54 by tlaverge         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
-#define PARSER_H
+# define PARSER_H
 
 # include "../minishell.h"
 # include <stdbool.h>
 
 typedef struct t_pars_start	t_pars_start;
-typedef struct t_pipe		t_pipe;
+typedef struct t_args		t_args;
+
 
 /*
 	str			= Raw split data from Readline
 	extracted	= If TYPE calls for it example $VAR will 
 					expand to the right value
-	type		= Type of the arg 
-					1 : Buildin, 
-					2: $, 
-					3: I(Pipe), 
-					4: (-)arg: 
-					5: TBD
+
+	split		= Split of str
 	index		= Location in the Linked list
 	init_s		= Redirect to the start struct
 	nxt			= Next arg in the list
@@ -27,49 +36,28 @@ typedef struct s_args
 {
 	char				*str;
 	char				*extracted;
-	int					type;
+	char				**split;
 	int					index;
 	struct t_Pars_start	*init_s;
 	struct s_Args		*nxt;
 	struct s_Args		*prev;
-	struct t_Pipe		*pipe;
 }	t_args;
 
 /*
-	start_pipe	= Arg number where the Pipe Starts
-	stop_pipe	= Arg number where the pipe stops
-	index		= Place where the stack is
-	start_arg	= Location where the pipe starts
-	init_s		= Redirect to the start struct
-	nxt			= Next pipe info if index is 0 then redirect the Start
-	prev		= prev pipe info
-*/
-typedef struct s_pipe
-{
-	int					start_pipe;
-	int					stop_pipe;
-	int					index;
-	struct s_Args		*start_arg;
-	struct t_Pars_start	*init_s;
-	struct t_Pipe		*nxt;
-	struct t_Pipe		*prev;
-
-}	t_pipe;
-
-
-/*
 	x_args 		= Ammount of args that are expected in the struct t_args
+	std_in		= String to STD IN or here doc shit
+	std_o		= string to STD OUT or Append shit idfk
 	pipe_info 	= Stuct containing all pipe info
-	args_start	= Start of the linked list of s_Args
+	args_start	= Start of the linked list of s_Args splits on pipe
 */
 typedef struct s_start
 {
 	int				x_args;
-	struct t_Pipe	*pipe_info;
+	char			*std_in;
+	char			*std_o;
 	struct s_Args	*args_start;
 
 }	t_pars_start;
-
 
 bool	parser_input(char *line);
 
@@ -77,8 +65,5 @@ void	p_line_s_init(t_pars_start *line_i, char *line);
 bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, int idx);
 
 void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
-void	p_struct_pipe_init(t_pars_start *line_i, t_pipe *pipe_i);
-void	p_struct_redir_init(t_pars_start *line_i);
-
 
 #endif

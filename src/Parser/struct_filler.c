@@ -6,20 +6,12 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/08 20:19:38 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/16 00:36:00 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.h"
 
-static void	p_fil_insert_pipe(/*TBD*/)
-{
-	
-}
-static void	p_fil_insert_redir(/*TBD*/)
-{
-	
-}
 static void	p_fil_type_arg(/*TBD*/)
 {
 	
