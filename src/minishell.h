@@ -20,6 +20,7 @@
 # include "executor/executor.h"
 # include "builtins/builtins.h"
 
+//general struct where you throw everything in yk
 typedef struct s_tools
 {
 	char	**paths;
@@ -28,6 +29,6 @@ typedef struct s_tools
 
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found
-int	find_envp_index(char **envp, char *path);
+int		find_envp_index(char **envp, char *path);
 
 #endif

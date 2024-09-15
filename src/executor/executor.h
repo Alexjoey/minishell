@@ -16,7 +16,7 @@
 # include <sys/wait.h>
 
 typedef struct s_tools	t_tools;
+
 int		execute(char *line, t_tools *tools);
-char	**get_paths(char **envp);
 
 #endif
