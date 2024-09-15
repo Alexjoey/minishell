@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
+/*   env_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 03:31:47 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/03 03:32:44 by amylle           ###   ########.fr       */
+/*   Created: 2024/09/15 06:09:06 by amylle            #+#    #+#             */
+/*   Updated: 2024/09/15 06:13:21 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
-# include <sys/types.h>
-# include <sys/wait.h>
+#include "../minishell.h"
 
-typedef struct s_tools	t_tools;
+int	env_builtin(char **args, t_tools *tools)
+{
+	int	i;
 
-int		execute(char *line, t_tools *tools);
-
-#endif
+	i = 0;
+	while (args[i])
+		i++;
+	if (i > 1)
+		return (EXIT_FAILURE);
+	while (tools->envp[++i])
+		ft_putendl_fd(tools->envp[i], STDOUT_FILENO);
+	return (EXIT_SUCCESS);
+}
