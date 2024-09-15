@@ -22,70 +22,56 @@ void	free_array(char **array)
 	free(array);
 }
 
-char	**get_paths(char **envp)
+int	isbuiltin(char *str)
 {
-	int		i;
-	char	*path;
-	char	**splitpath;
-	char	*tmp;
-
-	i = -1;
-	path = NULL;
-	while (envp[++i])
-		if (!ft_strncmp(envp[i], "PATH=", 5))
-			path = ft_substr(envp[i], 6, ft_strlen(envp[i]) - 6);
-	splitpath = ft_split(path, ':');
-	free (path);
-	i = -1;
-	while (splitpath[++i])
-	{
-		if (splitpath[i][ft_strlen(splitpath[i]) - 1] != '/')
-		{
-			tmp = ft_strjoin(splitpath[i], "/");
-			free (splitpath[i]);
-			splitpath[i] = tmp;
-		}
-	}
-	return (splitpath);
+	if (!ft_strncmp("cd", str, 3) || !ft_strncmp("echo", str, 5) \
+		|| !ft_strncmp("pwd", str, 4))
+		return (1);
+	return (0);
 }
 
-int	do_cmd(char *line, char **envp)
+int	find_cmd(char *line, t_tools *tools)
 {
 	char	**splitline;
-	char	**paths;
 	char	*pathcmd;
 	int		i;
 
 	i = -1;
 	pathcmd = NULL;
 	splitline = ft_split(line, ' ');
+	if (isbuiltin(splitline[0]))
+		exit(do_builtin(tools, splitline));
 	if (!access(splitline[0], F_OK))
+		execve(splitline[0], splitline, tools->envp);
+	while (tools->paths[++i])
 	{
-		execve(splitline[0], splitline, envp);
-		exit (0);
-	}
-	paths = get_paths(envp);
-	while (paths[++i])
-	{
-		pathcmd = ft_strjoin(paths[i], splitline[0]);
+		pathcmd = ft_strjoin(tools->paths[i], splitline[0]);
 		if (!access(pathcmd, F_OK))
-			execve(pathcmd, splitline, envp);
+			execve(pathcmd, splitline, tools->envp);
 		free(pathcmd);
 	}
 	printf("minishell: command not found: %s\n", splitline[0]);
-	free_array(paths);
 	free_array(splitline);
 	exit (127);
 }
 
-int	execute(char *line, char **envp)
+int	execute(char *line, t_tools *tools)
 {
 	int		pid;
 	int		status;
+	int		ret;
+	char	**splitline;
 
+	if (ft_strncmp(line, "cd", 2) == 0)
+	{
+		splitline = ft_split(line, ' ');
+		ret = cd_builtin(splitline, tools);
+		free_array(splitline);
+		return (ret);
+	}
 	pid = fork();
 	if (pid == 0)
-		do_cmd(line, envp);
+		find_cmd(line, tools);
 	waitpid(pid, &status, 0);
 	return (0);
 }

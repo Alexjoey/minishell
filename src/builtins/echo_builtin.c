@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
+/*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 03:31:47 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/03 03:32:44 by amylle           ###   ########.fr       */
+/*   Created: 2024/09/15 01:20:37 by amylle            #+#    #+#             */
+/*   Updated: 2024/09/15 06:01:05 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
-# include <sys/types.h>
-# include <sys/wait.h>
+#include "../minishell.h"
 
-typedef struct s_tools	t_tools;
-int		execute(char *line, t_tools *tools);
-char	**get_paths(char **envp);
+int	echo_builtin(char **args)
+{
+	int	i;
+	int	n_flag;
 
-#endif
+	n_flag = 0;
+	if (args[1] && ft_strncmp(args[1], "-n", 3) == 0)
+		n_flag = 1;
+	i = 0;
+	while (args[++i + n_flag])
+	{
+		ft_putstr_fd(args[i + n_flag], STDOUT_FILENO);
+		if (args[i + n_flag + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
+	}
+	if (n_flag == 0)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (EXIT_SUCCESS);
+}

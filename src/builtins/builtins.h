@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 03:31:47 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/03 03:32:44 by amylle           ###   ########.fr       */
+/*   Created: 2024/09/14 15:56:58 by amylle            #+#    #+#             */
+/*   Updated: 2024/09/15 05:59:44 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTOR_H
-# define EXECUTOR_H
-# include <sys/types.h>
-# include <sys/wait.h>
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
 typedef struct s_tools	t_tools;
-int		execute(char *line, t_tools *tools);
-char	**get_paths(char **envp);
+
+int	do_builtin(t_tools *tools, char **line);
+
+int	echo_builtin(char **args);
+int	cd_builtin(char **args, t_tools *tools);
+int	pwd_builtin(char **args, t_tools *tools);
+int	env_builtin(char **args, t_tools *tools);
 
 #endif
