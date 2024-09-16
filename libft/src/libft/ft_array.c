@@ -24,11 +24,12 @@ void	ft_freearray(char **array)
 
 char	**ft_duparray(char **array)
 {
-	int			i;
+	int		i;
 	char	**ret;
 
-	i = -1;
-	while (array[++i]);
+	i = 0;
+	while (array[i])
+		i++;
 	ret = ft_calloc(i, sizeof(char *));
 	i = -1;
 	while (array[++i])
