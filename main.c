@@ -59,6 +59,16 @@ int	find_envp_index(char **envp, char *path)
 	return (-1);
 }
 
+void	free_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (array[++i])
+		free(array[i]);
+	free(array);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;

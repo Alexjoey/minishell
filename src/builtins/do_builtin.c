@@ -23,5 +23,7 @@ int	do_builtin(t_tools *tools, char **args)
 		return (pwd_builtin(args, tools));
 	if (!ft_strncmp(args[0], "env", 4))
 		return (env_builtin(args, tools));
+	if (!ft_strncmp(args[0], "exit", 5))
+		exit_builtin(args, tools);
 	return (EXIT_FAILURE);
 }

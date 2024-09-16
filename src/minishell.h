@@ -30,5 +30,6 @@ typedef struct s_tools
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found
 int		find_envp_index(char **envp, char *path);
+void	free_array(char **array);
 
 #endif

@@ -12,20 +12,10 @@
 
 #include "../minishell.h"
 
-void	free_array(char **array)
-{
-	int	i;
-
-	i = -1;
-	while (array[++i])
-		free(array[i]);
-	free(array);
-}
-
 int	isbuiltin(char *str)
 {
 	if (!ft_strncmp("cd", str, 3) || !ft_strncmp("echo", str, 5) \
-		|| !ft_strncmp("pwd", str, 4))
+		|| !ft_strncmp("pwd", str, 4) || !ft_strncmp("exit", str, 5))
 		return (1);
 	return (0);
 }
@@ -68,6 +58,11 @@ int	execute(char *line, t_tools *tools)
 		ret = cd_builtin(splitline, tools);
 		free_array(splitline);
 		return (ret);
+	}
+	if (ft_strncmp(line, "exit", 5) == 0)
+	{
+		splitline = ft_split(line, ' ');
+		exit_builtin(splitline, tools);
 	}
 	pid = fork();
 	if (pid == 0)

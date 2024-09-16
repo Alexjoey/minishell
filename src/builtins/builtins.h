@@ -15,11 +15,12 @@
 
 typedef struct s_tools	t_tools;
 
-int	do_builtin(t_tools *tools, char **line);
+int		do_builtin(t_tools *tools, char **line);
 
-int	echo_builtin(char **args);
-int	cd_builtin(char **args, t_tools *tools);
-int	pwd_builtin(char **args, t_tools *tools);
-int	env_builtin(char **args, t_tools *tools);
+int		echo_builtin(char **args);
+int		cd_builtin(char **args, t_tools *tools);
+int		pwd_builtin(char **args, t_tools *tools);
+int		env_builtin(char **args, t_tools *tools);
+void	exit_builtin(char **args, t_tools *tools);
 
 #endif
