@@ -13,7 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft_corr/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -26,7 +25,7 @@ typedef struct s_tools
 {
 	char					**paths;
 	char					**envp;
-	struct t_pars_start		*parser
+	struct t_pars_start		*parser;
 }	t_tools;
 
 //will find the str starting with path inside of envp and return the index
