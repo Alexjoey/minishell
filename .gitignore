@@ -3,3 +3,4 @@ minishell
 compile_commands.json
 libft/libft.a
 .cache/
+.o

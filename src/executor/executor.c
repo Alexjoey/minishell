@@ -59,10 +59,11 @@ int	execute(char *line, t_tools *tools)
 		free_array(splitline);
 		return (ret);
 	}
-	if (ft_strncmp(line, "exit", 5) == 0)
+	if (ft_strncmp(line, "exit", 4) == 0)
 	{
 		splitline = ft_split(line, ' ');
 		exit_builtin(splitline, tools);
+		exit (0);
 	}
 	pid = fork();
 	if (pid == 0)

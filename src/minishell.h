@@ -18,6 +18,7 @@
 # include <readline/history.h>
 # include "executor/executor.h"
 # include "builtins/builtins.h"
+# include "../libft/inc/libft.h"
 
 typedef struct t_pars_start	t_pars_start;
 //general struct where you throw everything in yk
