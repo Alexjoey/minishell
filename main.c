@@ -47,6 +47,7 @@ t_tools	*init_tools(char **envp)
 	tools->envp = ft_duparray(envp);
 	tools->parser = ft_calloc(1, sizeof(t_pars_start *));
 	tools->parser->args_start = ft_calloc(1, sizeof(t_args *));
+	tools->parser->args_start->split = ft_split("cd ..", ' ');
 	return (tools);
 }
 

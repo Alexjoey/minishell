@@ -54,7 +54,7 @@ typedef struct s_start
 	int				x_args;
 	char			*std_in;
 	char			*std_o;
-	struct s_Args	*args_start;
+	t_args			*args_start;
 }	t_pars_start;
 
 bool	parser_input(char *line);
