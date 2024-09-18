@@ -45,6 +45,8 @@ t_tools	*init_tools(char **envp)
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
+	tools->parser = ft_calloc(1, sizeof(t_pars_start *));
+	tools->parser->args_start = ft_calloc(1, sizeof(t_args *));
 	return (tools);
 }
 

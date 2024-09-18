@@ -19,14 +19,15 @@
 # include "executor/executor.h"
 # include "builtins/builtins.h"
 # include "../libft/inc/libft.h"
+# include "Parser/Parser.h"
 
-typedef struct t_pars_start	t_pars_start;
+typedef struct s_start	t_pars_start;
 //general struct where you throw everything in yk
 typedef struct s_tools
 {
 	char					**paths;
 	char					**envp;
-	struct t_pars_start		*parser;
+	struct s_start			*parser;
 }	t_tools;
 
 //will find the str starting with path inside of envp and return the index

@@ -16,8 +16,8 @@
 # include "../minishell.h"
 # include <stdbool.h>
 
-typedef struct t_pars_start	t_pars_start;
-typedef struct t_args		t_args;
+typedef struct s_start	t_pars_start;
+typedef struct s_args	t_args;
 
 /*
 	str			= Raw split data from Readline
@@ -55,7 +55,6 @@ typedef struct s_start
 	char			*std_in;
 	char			*std_o;
 	struct s_Args	*args_start;
-
 }	t_pars_start;
 
 bool	parser_input(char *line);
