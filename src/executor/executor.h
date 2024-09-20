@@ -16,7 +16,8 @@
 # include <sys/wait.h>
 
 typedef struct s_tools	t_tools;
+typedef struct s_start	t_pars_start;
 
-int		execute(char *line, t_tools *tools);
+int		execute(t_pars_start *parser, t_tools *tools);
 
 #endif

@@ -13,6 +13,7 @@
 #include "libft/inc/libft.h"
 #include "src/minishell.h"
 
+//just gets $PATH
 char	**get_paths(char **envp)
 {
 	int		i;
@@ -47,7 +48,7 @@ t_tools	*init_tools(char **envp)
 	tools->envp = ft_duparray(envp);
 	tools->parser = ft_calloc(1, sizeof(t_pars_start *));
 	tools->parser->args_start = ft_calloc(1, sizeof(t_args *));
-	tools->parser->args_start->split = ft_split("cd ..", ' ');
+	tools->parser->args_start->split = ft_split("env", ' ');
 	return (tools);
 }
 
@@ -88,7 +89,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		line = readline("minishell ~> ");
 		add_history(line);
-		execute(line, tools);
+		execute(tools->parser, tools);
 		free (line);
 	}
 }

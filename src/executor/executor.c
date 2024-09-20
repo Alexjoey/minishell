@@ -10,64 +10,112 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "executor.h"
 #include "../minishell.h"
+#include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
 
+//returns 1 if it is builtin
 int	isbuiltin(char *str)
 {
 	if (!ft_strncmp("cd", str, 3) || !ft_strncmp("echo", str, 5) \
-		|| !ft_strncmp("pwd", str, 4) || !ft_strncmp("exit", str, 5))
+		|| !ft_strncmp("pwd", str, 4) || !ft_strncmp("exit", str, 5) \
+		|| !ft_strncmp("unset", str, 6) || !ft_strncmp("env", str, 4) \
+		|| !ft_strncmp("export", str, 7))
 		return (1);
 	return (0);
 }
 
-int	find_cmd(char *line, t_tools *tools)
+//tries to find command in either bin/paths or just relative path
+//then executes
+int	find_cmd(char **split, t_tools *tools)
 {
-	char	**splitline;
 	char	*pathcmd;
 	int		i;
 
 	i = -1;
 	pathcmd = NULL;
-	splitline = ft_split(line, ' ');
-	if (isbuiltin(splitline[0]))
-		exit(do_builtin(tools, splitline));
-	if (!access(splitline[0], F_OK))
-		execve(splitline[0], splitline, tools->envp);
+	if (isbuiltin(split[0]))
+		exit(do_builtin(tools, split));
+	if (!access(split[0], F_OK))
+		execve(split[0], split, tools->envp);
 	while (tools->paths[++i])
 	{
-		pathcmd = ft_strjoin(tools->paths[i], splitline[0]);
+		pathcmd = ft_strjoin(tools->paths[i], split[0]);
 		if (!access(pathcmd, F_OK))
-			execve(pathcmd, splitline, tools->envp);
+			execve(pathcmd, split, tools->envp);
 		free(pathcmd);
 	}
-	printf("minishell: command not found: %s\n", splitline[0]);
-	free_array(splitline);
+	printf("minishell: command not found: %s\n", split[0]);
 	exit (127);
 }
 
-int	execute(char *line, t_tools *tools)
+int	handle_heredoc(char *std_in, t_tools *tools)
 {
-	int		pid;
-	int		status;
-	int		ret;
-	char	**splitline;
+	return (0);
+}
 
-	if (ft_strncmp(line, "cd", 2) == 0)
+int	handle_input_redirection(char *std_in, t_tools *tools)
+{
+	int	fd;
+
+	if (std_in == NULL)
+		return (STDIN_FILENO);
+	if (ft_strncmp("< ", std_in, 2) == 0)
 	{
-		splitline = ft_split(line, ' ');
-		ret = cd_builtin(splitline, tools);
-		free_array(splitline);
-		return (ret);
+		fd = open(std_in + 2, O_RDONLY);
+		if (fd < 0)
+		{
+			ft_putstr_fd("minishell: infile: No such file or directory: ", STDERR_FILENO);
+			ft_putendl_fd(std_in + 2, STDERR_FILENO);
+			return (-1);
+		}
+		return (fd);
 	}
-	if (ft_strncmp(line, "exit", 4) == 0)
+	if (ft_strncmp("<< ", std_in, 3))
 	{
-		splitline = ft_split(line, ' ');
-		exit_builtin(splitline, tools);
+		fd = handle_heredoc(std_in + 3, tools);
+		if (fd < 0)
+		{
+			ft_putstr_fd("minishell: infile: No such file or directory: ", STDERR_FILENO);
+			ft_putendl_fd(std_in + 3, STDERR_FILENO);
+			return (-1);
+		}
+		return (fd);
+	}
+	return (-1);
+}
+
+//
+int	execute(t_pars_start *parser, t_tools *tools)
+{
+	int fd;
+
+	if (ft_strncmp(parser->args_start->split[0], "cd", 3) == 0)
+		return (cd_builtin(parser->args_start->split, tools));
+	if (ft_strncmp(parser->args_start->split[0], "exit", 5) == 0)
+	{
+		exit_builtin(parser->args_start->split, tools);
 		exit (0);
 	}
+	fd = handle_input_redirection(parser->std_in, tools);
+	if (fd < 0)
+		return (EXIT_FAILURE);
+	while(parser->args_start)
+	{
+	}
+	return (0);
+}
+
+int	make_fork(t_pars_start *parser, t_tools *tools)
+{
+	int	pid;
+	int	status;
+
 	pid = fork();
 	if (pid == 0)
-		find_cmd(line, tools);
+		find_cmd(parser->args_start->split, tools);
 	waitpid(pid, &status, 0);
 	return (0);
 }
