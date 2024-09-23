@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:10:14 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/16 00:31:32 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/23 01:00:10 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	p_line_s_init(t_pars_start *line_i, char *line)
 	int		j;
 
 	p_struct_arg_init(line_i, NULL);
-	p_struct_pipe_init(line_i, NULL);
-	p_struct_redir_init(line_i);
+	//p_struct_pipe_init(line_i, NULL);
+	//p_struct_redir_init(line_i);
 
 
 	split = ft_split(line, '|');
@@ -49,7 +49,7 @@ void	p_line_s_init(t_pars_start *line_i, char *line)
 	i = 0;
 	while (split[i])
 	{
-		if (!p_fil_inset_arg(line_i, split[i], i))
+		if (!p_fil_inset_arg(line_i, split[i]))
 		{
 			/*ERROR MANAGEMENT if adding arg fails (malloc or unexpected arg)*/
 		}

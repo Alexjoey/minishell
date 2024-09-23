@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/16 00:49:34 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/23 01:04:15 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,11 @@ typedef struct s_start
 bool	parser_input(char *line);
 
 void	p_line_s_init(t_pars_start *line_i, char *line);
-bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, int idx);
+bool	p_fil_inset_arg(t_pars_start *line_i, char *arg);
 
 void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
+
+int		P_U_get_size_Total(t_args *arg_list);
+
 
 #endif
