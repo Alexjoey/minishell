@@ -6,13 +6,13 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/23 01:38:46 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/09/25 22:29:09 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.h"
 
-static void p_join_str_extracted(t_args *arg, char** join)
+static void	p_join_str_extracted(t_args *arg, char **join)
 {
 	int		idx;
 	char	*ret;
@@ -24,15 +24,14 @@ static void p_join_str_extracted(t_args *arg, char** join)
 		ret = ft_strjoinfree(ret, join[idx]);
 		idx++;
 	}
-	
 	arg->extracted = ret;
 }
 
 static void	p_fil_type_arg(t_args *new, char *arg)
 {
-	int 	idx;
+	int		idx;
 	char	**tmp;
-	
+
 	idx = 0;
 	new->str = arg;
 	new->split = ft_split(arg, ' ');
@@ -48,7 +47,6 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 			tmp[idx] = new->split[idx];
 		idx++;
 	}
-	
 	p_join_str_extracted(new, tmp);
 }
 
