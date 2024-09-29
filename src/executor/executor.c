@@ -52,17 +52,35 @@ int	find_cmd(char **split, t_tools *tools)
 	exit (127);
 }
 
-int	handle_heredoc(char *std_in, t_tools *tools)
+int	handle_heredoc(char *delimiter)
 {
-	return (0);
+	char	*line;
+	int		fd;
+
+	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	line = readline("heredoc> ");
+	while (ft_strncmp(delimiter, line, ft_strlen(line)) != 0)
+	{
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+		free (line);
+		line = readline("heredoc> ");
+	}
+	free (line);
+	if (dup2(fd, STDIN_FILENO) < 0)
+	{
+		ft_putendl_fd("minishell: piping error", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	unlink(".tmpheredoc");
+	close (fd);
+	return (EXIT_SUCCESS);
 }
 
-int	handle_input_redirection(char *std_in, t_tools *tools)
+int	handle_input_redirection(char *std_in)
 {
 	int	fd;
 
-	if (std_in == NULL)
-		return (STDIN_FILENO);
 	if (ft_strncmp("< ", std_in, 2) == 0)
 	{
 		fd = open(std_in + 2, O_RDONLY);
@@ -70,55 +88,48 @@ int	handle_input_redirection(char *std_in, t_tools *tools)
 		{
 			ft_putstr_fd("minishell: infile: No such file or directory: ", STDERR_FILENO);
 			ft_putendl_fd(std_in + 2, STDERR_FILENO);
-			return (-1);
-		}
-		return (fd);
-	}
-	if (ft_strncmp("<< ", std_in, 3))
-	{
-		fd = handle_heredoc(std_in + 3, tools);
-		if (fd < 0)
-		{
-			ft_putstr_fd("minishell: infile: No such file or directory: ", STDERR_FILENO);
-			ft_putendl_fd(std_in + 3, STDERR_FILENO);
-			return (-1);
-		}
-		return (fd);
-	}
-	return (-1);
-}
-
-//
-int	execute(t_pars_start *parser, t_tools *tools)
-{
-	int fd;
-
-	if (ft_strncmp(parser->args_start->split[0], "cd", 3) == 0)
-		return (cd_builtin(parser->args_start->split, tools));
-	if (ft_strncmp(parser->args_start->split[0], "exit", 5) == 0)
-	{
-		exit_builtin(parser->args_start->split, tools);
-		exit (0);
-	}
-	if (parser->std_in != NULL)
-		if (handle_input_redirection(parser->std_in, tools) != EXIT_FAILURE)
 			return (EXIT_FAILURE);
-	if (fd < 0)
-		return (EXIT_FAILURE);
-	while(parser->args_start)
-	{
+		}
+		if (dup2(fd, STDIN_FILENO) < 0)
+		{
+			ft_putendl_fd("minishell: piping error", STDERR_FILENO);
+			return (EXIT_FAILURE);
+		}
+		close (fd);
 	}
-	return (0);
+	else if (ft_strncmp("<< ", std_in, 3))
+	{
+		if (handle_heredoc(std_in + 3) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
-int	make_fork(t_pars_start *parser, t_tools *tools)
+int	make_fork(t_args *args, t_tools *tools)
 {
 	int	pid;
 	int	status;
 
 	pid = fork();
 	if (pid == 0)
-		find_cmd(parser->args_start->split, tools);
+		find_cmd(args->split, tools);
 	waitpid(pid, &status, 0);
+	return (0);
+}
+
+//
+int	execute(t_pars_start *parser, t_tools *tools)
+{
+	t_args	*args;
+
+	args = parser->args_start;
+	if (parser->std_in != NULL)
+		if (handle_input_redirection(parser->std_in) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	while(args)
+	{
+		make_fork(args, tools);
+		args = args->nxt;
+	}
 	return (0);
 }

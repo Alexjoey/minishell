@@ -38,8 +38,8 @@ typedef struct s_args
 	char				**split;
 	int					index;
 	struct t_Pars_start	*init_s;
-	struct s_Args		*nxt;
-	struct s_Args		*prev;
+	t_args		*nxt;
+	t_args		*prev;
 }	t_args;
 
 /*
