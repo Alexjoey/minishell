@@ -12,6 +12,7 @@
 
 #include "executor.h"
 #include "../minishell.h"
+#include <complex.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -99,7 +100,9 @@ int	execute(t_pars_start *parser, t_tools *tools)
 		exit_builtin(parser->args_start->split, tools);
 		exit (0);
 	}
-	fd = handle_input_redirection(parser->std_in, tools);
+	if (parser->std_in != NULL)
+		if (handle_input_redirection(parser->std_in, tools) != EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	if (fd < 0)
 		return (EXIT_FAILURE);
 	while(parser->args_start)
