@@ -67,12 +67,13 @@ int	handle_heredoc(char *delimiter)
 		line = readline("heredoc> ");
 	}
 	free (line);
+	close (fd);
+	fd = open(".tmpheredoc", O_RDONLY);
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		ft_putendl_fd("minishell: piping error", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	unlink(".tmpheredoc");
 	close (fd);
 	return (EXIT_SUCCESS);
 }
@@ -97,7 +98,7 @@ int	handle_input_redirection(char *std_in)
 		}
 		close (fd);
 	}
-	else if (ft_strncmp("<< ", std_in, 3))
+	else if (ft_strncmp("<< ", std_in, 3) == 0)
 	{
 		if (handle_heredoc(std_in + 3) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
@@ -112,7 +113,10 @@ int	make_fork(t_args *args, t_tools *tools)
 
 	pid = fork();
 	if (pid == 0)
+	{
 		find_cmd(args->split, tools);
+		exit (0);
+	}
 	waitpid(pid, &status, 0);
 	return (0);
 }
@@ -131,5 +135,6 @@ int	execute(t_pars_start *parser, t_tools *tools)
 		make_fork(args, tools);
 		args = args->nxt;
 	}
+	dup2(0, STDIN_FILENO);
 	return (0);
 }

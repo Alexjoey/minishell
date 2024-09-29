@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft/inc/libft.h"
+#include "src/Parser/Parser.h"
 #include "src/minishell.h"
 
 //just gets $PATH
@@ -46,10 +47,11 @@ t_tools	*init_tools(char **envp)
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
-	tools->parser = ft_calloc(1, sizeof(t_pars_start *));
-	tools->parser->args_start = ft_calloc(1, sizeof(t_args *));
-	tools->parser->args_start->split = ft_split("echo", ' ');
-	tools->parser->std_in = ft_strdup("< text");
+	tools->parser = ft_calloc(1, sizeof(t_pars_start));
+	tools->parser->args_start = ft_calloc(1, sizeof(t_args));
+	tools->parser->args_start->split = ft_split("cat", ' ');
+	tools->parser->args_start->nxt = NULL;
+	tools->parser->std_in = ft_strdup("<< END");
 	return (tools);
 }
 
@@ -74,6 +76,24 @@ void	free_array(char **array)
 	free(array);
 }
 
+void	reset_parser(t_pars_start *parser)
+{
+	t_args	*args;
+
+	args = parser->args_start;
+	while (args)
+	{
+		free (args->str);
+		free_array (args->split);
+		free (args->extracted);
+		args = args->nxt;
+	}
+	free (parser->std_o);
+	free (parser->std_in);
+	free (parser);
+	unlink(".tmpheredoc");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -92,5 +112,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		execute(tools->parser, tools);
 		free (line);
+		reset_parser(tools->parser);
+		printf("end of while loop\n");
 	}
 }

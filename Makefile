@@ -17,7 +17,7 @@ OBJ_DIR	= ./obj
 SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c ./src/builtins/exit_builtin.c
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC		= cc
-CFLAGS	= -Wextra -Wall -Werror
+CFLAGS	= -Wextra -Wall -Werror -g
 INCLUDE	= -I$(SRC_DIR) -Llibft -lft -lreadline -lncurses 
 LIBFT	= libft/libft.a
 RM		= rm -rf
