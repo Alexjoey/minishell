@@ -28,6 +28,15 @@ int	isbuiltin(char *str)
 	return (0);
 }
 
+int	ft_error(char *errormessage, char *filename)
+{
+	ft_putstr_fd(errormessage, STDERR_FILENO);
+	if (filename)
+		ft_putstr_fd(filename, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	return (1);
+}
+
 //tries to find command in either bin/paths or just relative path
 //then executes
 int	find_cmd(char **split, t_tools *tools)
@@ -48,7 +57,7 @@ int	find_cmd(char **split, t_tools *tools)
 			execve(pathcmd, split, tools->envp);
 		free(pathcmd);
 	}
-	printf("minishell: command not found: %s\n", split[0]);
+	ft_error("minishell: command not found: ", split[0]);
 	exit (127);
 }
 
@@ -59,7 +68,7 @@ int	handle_heredoc(char *delimiter)
 
 	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 	line = readline("heredoc> ");
-	while (ft_strncmp(delimiter, line, ft_strlen(line)) != 0)
+	while (ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -70,11 +79,9 @@ int	handle_heredoc(char *delimiter)
 	close (fd);
 	fd = open(".tmpheredoc", O_RDONLY);
 	if (dup2(fd, STDIN_FILENO) < 0)
-	{
-		ft_putendl_fd("minishell: piping error", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
+		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
+	unlink(".tmpheredoc");
 	return (EXIT_SUCCESS);
 }
 
@@ -86,55 +93,98 @@ int	handle_input_redirection(char *std_in)
 	{
 		fd = open(std_in + 2, O_RDONLY);
 		if (fd < 0)
-		{
-			ft_putstr_fd("minishell: infile: No such file or directory: ", STDERR_FILENO);
-			ft_putendl_fd(std_in + 2, STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
+			return (ft_error("minishell: infile: No such file or directory: " \
+					, std_in + 2));
 		if (dup2(fd, STDIN_FILENO) < 0)
-		{
-			ft_putendl_fd("minishell: piping error", STDERR_FILENO);
-			return (EXIT_FAILURE);
-		}
+			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close (fd);
 	}
-	else if (ft_strncmp("<< ", std_in, 3) == 0)
-	{
-		if (handle_heredoc(std_in + 3) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-	}
+	else if (handle_heredoc(std_in + 3) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	make_fork(t_args *args, t_tools *tools)
+int	handle_output_redirection(char	*std_o)
+{
+	int	fd;
+
+	if (ft_strncmp("> ", std_o, 2) == 0)
+		fd = open(std_o + 2, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
+	else
+		fd = open(std_o + 3, O_RDWR | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+	if (fd < 0)
+		return (ft_error("minishell: outfile: No such file or directory: " \
+				, std_o + 2));
+	if (dup2(fd, STDOUT_FILENO) < 0)
+		return (ft_error("minishell: Failed to create a pipe\n", NULL));
+	close (fd);
+	return (EXIT_SUCCESS);
+}
+
+int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in)
+{
+	if (!args->prev && tools->parser->std_in)
+		if (handle_input_redirection(tools->parser->std_in) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	if (args->prev)
+	{
+		if (dup2(fd_in, STDIN_FILENO) < 0)
+			return (ft_error("minishell: Failed to create a pipe\n", NULL));
+		close(fd_in);
+	}
+	if (args->nxt)
+	{
+		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
+			return (ft_error("minishell: Failed to create a pipe\n", NULL));
+		close(pipefd[1]);
+	}
+	if (!args->nxt && tools->parser->std_o)
+		return (handle_output_redirection(tools->parser->std_o));
+	return (EXIT_SUCCESS);
+}
+
+//makes a fork for each args, tries to do redirections and pipes
+//will return errornum
+int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 {
 	int	pid;
 	int	status;
+	int	fd_in;
 
+	if (args->prev)
+		fd_in = pipefd[0];
+	if (args->nxt)
+		pipe(pipefd);
 	pid = fork();
+	if (pid < 0)
+		return (ft_error("minishell: Failed to create fork", NULL));
 	if (pid == 0)
 	{
+		if (handle_pipes(args, tools, pipefd, fd_in) == EXIT_FAILURE)
+			exit (1);
 		find_cmd(args->split, tools);
-		exit (0);
 	}
 	waitpid(pid, &status, 0);
-	return (0);
+	if (args->prev)
+		close(fd_in);
+	if (args->nxt)
+		close(pipefd[1]);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (EXIT_FAILURE);
 }
 
 //
 int	execute(t_pars_start *parser, t_tools *tools)
 {
 	t_args	*args;
+	int		pipefd[2];
 
 	args = parser->args_start;
-	if (parser->std_in != NULL)
-		if (handle_input_redirection(parser->std_in) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-	while(args)
+	while (args)
 	{
-		make_fork(args, tools);
+		tools->errornum = make_fork(args, tools, pipefd);
 		args = args->nxt;
 	}
-	dup2(0, STDIN_FILENO);
 	return (0);
 }

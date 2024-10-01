@@ -47,11 +47,16 @@ t_tools	*init_tools(char **envp)
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
-	tools->parser = ft_calloc(1, sizeof(t_pars_start));
-	tools->parser->args_start = ft_calloc(1, sizeof(t_args));
-	tools->parser->args_start->split = ft_split("cat", ' ');
-	tools->parser->args_start->nxt = NULL;
-	tools->parser->std_in = ft_strdup("<< END");
+	tools->parser = ft_calloc(2, sizeof(t_pars_start));
+	tools->parser->args_start = ft_calloc(3, sizeof(t_args));
+	tools->parser->args_start[0].split = ft_split("ps aux", ' ');
+	tools->parser->args_start[0].nxt = &tools->parser->args_start[1];
+	tools->parser->args_start[1].prev = &tools->parser->args_start[0];
+	tools->parser->args_start[1].split = ft_split("grep python", ' ');
+	tools->parser->args_start[1].nxt = &tools->parser->args_start[2];
+	tools->parser->args_start[2].prev = &tools->parser->args_start[1];
+	tools->parser->args_start[2].split = ft_split("awk '{print", ' ');
+	tools->parser->std_o = ft_strdup(">> text.txt");
 	return (tools);
 }
 
@@ -91,7 +96,6 @@ void	reset_parser(t_pars_start *parser)
 	free (parser->std_o);
 	free (parser->std_in);
 	free (parser);
-	unlink(".tmpheredoc");
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -112,7 +116,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		execute(tools->parser, tools);
 		free (line);
-		reset_parser(tools->parser);
+//		reset_parser(tools->parser);
 		printf("end of while loop\n");
 	}
 }

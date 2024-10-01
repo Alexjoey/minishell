@@ -21,6 +21,7 @@ int	env_builtin(char **args, t_tools *tools)
 		i++;
 	if (i > 1)
 		return (EXIT_FAILURE);
+	i = -1;
 	while (tools->envp[++i])
 		ft_putendl_fd(tools->envp[i], STDOUT_FILENO);
 	return (EXIT_SUCCESS);

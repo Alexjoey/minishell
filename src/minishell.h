@@ -28,6 +28,7 @@ typedef struct s_tools
 	char					**paths;
 	char					**envp;
 	struct s_start			*parser;
+	int						errornum;
 }	t_tools;
 
 //will find the str starting with path inside of envp and return the index
