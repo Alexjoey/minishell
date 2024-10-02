@@ -48,6 +48,10 @@ $(LIBFT):
 $(NAME):	$(OBJS) $(LIBFT)
 				@echo Compiling $(NAME)
 				@$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) -o $(NAME)
+				$(RM) $(NAME) $(OBJ_DIR)
+				@make fclean -C ./libft
+
+re:			fclean all
 
 clean:	
 				@echo "$(BOLD_YELLOW)Removing all object files and directories"
