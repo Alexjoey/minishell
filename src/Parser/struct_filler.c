@@ -6,11 +6,11 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/25 22:29:09 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/02 22:48:47 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parser.h"
+#include "../minishell.h"
 
 static void	p_join_str_extracted(t_args *arg, char **join)
 {
@@ -61,11 +61,11 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
 	t_args			*new;
 	int				idx;
 
-	idx = P_U_get_size_Total(line_i->args_start) + 1;
+	idx = p_u_get_size_total(line_i->args_start) + 1;
 	new = ft_calloc(1, sizeof(t_args *));
 	if (!new)
 		return (false);
-	p_struct_arg_init(NULL, curr);
+	p_struct_arg_init(NULL, new);
 	if (line_i->x_args <= idx)
 		line_i->x_args = idx;
 	curr = line_i->args_start;
@@ -76,4 +76,5 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
 	new->init_s = line_i;
 	new->index = idx;
 	p_fil_type_arg(new, arg);
+	return (true);
 }

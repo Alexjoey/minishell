@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amylle <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/30 11:58:06 by amylle            #+#    #+#              #
-#    Updated: 2024/09/15 05:41:11 by amylle           ###   ########.fr        #
+#    Updated: 2024/10/02 17:39:34 by tlaverge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,14 @@ SRC_DIR	= ./src
 INC_DIR	= ./inc
 OBJ_DIR	= ./obj
 
-SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c ./src/builtins/exit_builtin.c
+SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c ./src/builtins/exit_builtin.c \
+				 ./src/Parser/parser_utils1.c ./src/Parser/parser.c ./src/Parser/struct_filler.c ./src/Parser/Struct_init.c
+#SRCS	= $(wildcard src/*.c) #$(wildcard src/*.h)
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC		= cc
-CFLAGS	= -Wextra -Wall -Werror -g
+CFLAGS	= -Wextra -Wall -Werror -g3 -O0
 INCLUDE	= -I$(SRC_DIR) -Llibft -lft -lreadline -lncurses 
+#INCLUDE		= $(wildcard src/*.h)
 LIBFT	= libft/libft.a
 RM		= rm -rf
 
@@ -60,6 +63,12 @@ clean:
 
 fclean:
 				@echo "$(BOLD_YELLOW)Removing binaries"
+				$(RM) $(NAME) $(OBJ_DIR)
+				@make fclean -C ./libft
+
+Debug:		$(OBJS) $(LIBFT)
+				@echo Compiling $(NAME)
+				@$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) -o ../Debug/Debug
 				$(RM) $(NAME) $(OBJ_DIR)
 				@make fclean -C ./libft
 

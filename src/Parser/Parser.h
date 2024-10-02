@@ -6,14 +6,13 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/09/29 16:35:03 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/02 22:47:16 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "../minishell.h"
 # include <stdbool.h>
 
 typedef struct s_start	t_pars_start;
@@ -37,9 +36,9 @@ typedef struct s_args
 	char				*extracted;
 	char				**split;
 	int					index;
-	struct t_Pars_start	*init_s;
-	t_args		*nxt;
-	t_args		*prev;
+	struct s_start		*init_s;
+	t_args				*nxt;
+	t_args				*prev;
 }	t_args;
 
 /*
@@ -67,6 +66,5 @@ void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 int		p_u_get_size_total(t_args *arg_list);
 char	*p_u_get_std_in(t_pars_start *parser);
 char	*p_u_get_std_out(t_pars_start *parser);
-
 
 #endif

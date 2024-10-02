@@ -3,15 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:17:10 by amylle            #+#    #+#             */
-/*   Updated: 2024/07/24 16:20:53 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/02 22:56:58 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/inc/libft.h"
-#include "src/Parser/Parser.h"
 #include "src/minishell.h"
 
 //just gets $PATH
@@ -48,15 +46,6 @@ t_tools	*init_tools(char **envp)
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
 	tools->parser = ft_calloc(2, sizeof(t_pars_start));
-	tools->parser->args_start = ft_calloc(3, sizeof(t_args));
-	tools->parser->args_start[0].split = ft_split("ps aux", ' ');
-	tools->parser->args_start[0].nxt = &tools->parser->args_start[1];
-	tools->parser->args_start[1].prev = &tools->parser->args_start[0];
-	tools->parser->args_start[1].split = ft_split("grep python", ' ');
-	tools->parser->args_start[1].nxt = &tools->parser->args_start[2];
-	tools->parser->args_start[2].prev = &tools->parser->args_start[1];
-	tools->parser->args_start[2].split = ft_split("awk '{print", ' ');
-	tools->parser->std_o = ft_strdup(">> text.txt");
 	return (tools);
 }
 
@@ -113,9 +102,12 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell ~> ");
-		add_history(line);
-		execute(tools->parser, tools);
-		free (line);
+		if (parser_input(line))
+		{
+			add_history(line);
+			execute(tools->parser, tools);
+			free (line);	
+		}
 //		reset_parser(tools->parser);
 		printf("end of while loop\n");
 	}
