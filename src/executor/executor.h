@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 03:31:47 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/03 03:32:44 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/03 17:00:58 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 typedef struct s_tools	t_tools;
 typedef struct s_start	t_pars_start;
+typedef struct s_args	t_args;
 
-int		execute(t_pars_start *parser, t_tools *tools);
+int		execute(t_args *args, t_tools *tools);
 
 #endif

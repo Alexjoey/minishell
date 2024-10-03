@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 01:54:50 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/03 01:55:56 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/03 16:57:50 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,12 +175,10 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 }
 
 //
-int	execute(t_pars_start *parser, t_tools *tools)
+int	execute(t_args *args, t_tools *tools)
 {
-	t_args	*args;
 	int		pipefd[2];
 
-	args = parser->args_start;
 	while (args)
 	{
 		tools->errornum = make_fork(args, tools, pipefd);

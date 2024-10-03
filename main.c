@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:17:10 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/03 13:43:50 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:26:05 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_tools	*init_tools(char **envp)
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
-	tools->parser = ft_calloc(2, sizeof(t_pars_start));
 	return (tools);
 }
 
@@ -77,9 +76,10 @@ void	reset_parser(t_pars_start *parser)
 	args = parser->args_start;
 	while (args)
 	{
+		if (args->prev)
+			free(args->prev);
 		free (args->str);
 		free_array (args->split);
-		free (args->extracted);
 		args = args->nxt;
 	}
 	free (parser->std_o);
@@ -106,10 +106,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			tools->parser = parser_input(line);
 			add_history(line);
-			execute(tools->parser, tools);
+			execute(tools->parser->args_start, tools);
 			free (line);	
 		}
-//		reset_parser(tools->parser);
+		reset_parser(tools->parser);
 		printf("end of while loop\n");
 	}
 }

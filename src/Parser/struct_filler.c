@@ -6,12 +6,12 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/03 13:23:07 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:25:30 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.h"
-
+/*
 static void	p_join_str_extracted(t_args *arg, char **join)
 {
 	int		idx;
@@ -26,7 +26,7 @@ static void	p_join_str_extracted(t_args *arg, char **join)
 	}
 	arg->extracted = ret;
 }
-
+*/
 static void	p_fil_type_arg(t_args *new, char *arg)
 {
 	int		idx;
@@ -47,7 +47,7 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 			tmp[idx] = new->split[idx];
 		idx++;
 	}
-	p_join_str_extracted(new, tmp);
+	//p_join_str_extracted(new, tmp);
 }
 
 /*
@@ -62,17 +62,23 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
 	int				idx;
 
 	idx = p_u_get_size_total(line_i->args_start) + 1;
-	new = ft_calloc(1, sizeof(t_args *));
+	new = ft_calloc(1, sizeof(t_args));
 	if (!new)
 		return (false);
-	p_struct_arg_init(NULL, new);
+	//p_struct_arg_init(NULL, new);
 	if (line_i->x_args <= idx)
 		line_i->x_args = idx;
-	curr = line_i->args_start;
-	while (curr->nxt)
-		curr = curr->nxt;
-	new->prev = curr;
-	curr->nxt = new;
+	if (line_i->args_start)
+	{
+		curr = line_i->args_start;
+		while (curr->nxt)
+			curr = curr->nxt;
+		curr->nxt = new;
+		new->prev = curr;
+
+	}
+	else
+		line_i->args_start = new;
 	new->init_s = line_i;
 	new->index = idx;
 	p_fil_type_arg(new, arg);

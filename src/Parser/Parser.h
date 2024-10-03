@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/03 13:44:46 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:26:16 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ typedef struct s_args	t_args;
 
 /*
 	str			= Raw split data from Readline
-	extracted	= If TYPE calls for it example $VAR will 
-					expand to the right value
-
 	split		= Split of str
 	index		= Location in the Linked list
 	init_s		= Redirect to the start struct
@@ -35,7 +32,6 @@ typedef struct s_args	t_args;
 typedef struct s_args
 {
 	char				*str;
-	char				*extracted;
 	char				**split;
 	int					index;
 	struct s_start		*init_s;

@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 17:41:21 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/03 03:38:18 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 15:41:16 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**ft_split(char const *s, char c)
 	if (s == NULL)
 		return (NULL);
 	wrdcnt = word_count(s, c);
-	ret = malloc(sizeof(char **) * (wrdcnt + 1));
+	ret = malloc(sizeof(char *) * (wrdcnt + 1));
 	if (!ret)
 		return (NULL);
 	make_words(ret, s, c, wrdcnt);

@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:47:59 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/03 13:22:56 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 17:39:50 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	p_u_get_size_total(t_args *arg_list)
 	int		i;
 
 	i = 0;
+	if (!(arg_list))
+		return (0);
+	if (!(arg_list->prev))
+		return (1);
 	while (arg_list->prev)
 		temp = arg_list->prev;
 	while (temp->nxt)
@@ -33,6 +37,7 @@ int	p_u_get_size_total(t_args *arg_list)
 char	*p_u_get_std_in(t_pars_start *parser)
 {
 	int	i;
+	char	*tmp;
 
 	i = 0;
 	if (parser->x_args > 0)
@@ -43,29 +48,49 @@ char	*p_u_get_std_in(t_pars_start *parser)
 						ft_strlen(parser->args_start->split[i])))
 				|| (ft_strnstr(parser->args_start->split[i], "<<",
 						ft_strlen(parser->args_start->split[i]))))
-				return (ft_strjoin(parser->args_start->split[i - 1],
-						parser->args_start->split[i]));
+				{
+					tmp = ft_strjoin(parser->args_start->split[i - 1],
+					parser->args_start->split[i]);
+					free(parser->args_start->split[i - 1]);
+					parser->args_start->split[i - 1] = NULL;
+					free(parser->args_start->split[i]);
+					return (tmp);
+				}
+			i++;
 		}
 	}
-	return ("");
+	return (NULL);
 }
 
 char	*p_u_get_std_out(t_pars_start *parser)
 {
-	int	i;
+	int		i;
+	t_args	*curr;
+	char	*tmp;
 
 	i = 0;
+	curr = parser->args_start;
 	if (parser->x_args > 0)
 	{
-		while (parser->args_start->split[i])
+		while(curr->nxt)
+			curr = curr->nxt;
+		while (curr->split[i])
 		{
-			if ((ft_strnstr(parser->args_start->split[i], ">",
-						ft_strlen(parser->args_start->split[i])))
-				|| (ft_strnstr(parser->args_start->split[i], ">>",
-						ft_strlen(parser->args_start->split[i]))))
-				return (ft_strjoin(parser->args_start->split[i - 1],
-						parser->args_start->split[i]));
+			if ((ft_strnstr(curr->split[i], ">",
+						ft_strlen(curr->split[i])))
+				|| (ft_strnstr(curr->split[i], ">>",
+						ft_strlen(curr->split[i]))))
+				{
+					tmp = ft_strjoin(curr->split[i],
+					curr->split[i + 1]);
+					free(curr->split[i]);
+					curr->split[i] = NULL;
+					free(curr->split[i + 1]);
+					return (tmp);
+				}
+
+			i++;
 		}
 	}
-	return ("");
+	return (NULL);
 }
