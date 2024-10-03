@@ -51,8 +51,7 @@ $(LIBFT):
 $(NAME):	$(OBJS) $(LIBFT)
 				@echo Compiling $(NAME)
 				@$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) -o $(NAME)
-				$(RM) $(NAME) $(OBJ_DIR)
-				@make fclean -C ./libft
+				@make clean -C ./libft
 
 re:			fclean all
 
