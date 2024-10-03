@@ -6,11 +6,22 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:10:14 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/02 23:12:00 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 03:30:06 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	p_struct_arg_setnull(t_args *arg)
+{
+	arg->str = NULL;
+	arg->extracted = NULL;
+	arg->split = NULL;
+	arg->index = 0;
+	arg->init_s = NULL;
+	arg->nxt = NULL;
+	arg->prev = NULL;
+}
 
 /*
 	Init of args for the executer struct 
@@ -26,17 +37,21 @@ void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
 		if (!line_i->args_start)
 		{
 			line_i->args_start = calloc(sizeof(t_args *), 1);
+			p_struct_arg_setnull(line_i->args_start);
 			return ;
 		}
 		arg_s = line_i->args_start;
 		while (arg_s->nxt)
 			arg_s = arg_s->nxt;
 		arg_s->nxt = calloc(sizeof(t_args *), 1);
+		p_struct_arg_setnull(arg_s->nxt);
 
 	}
 	else
 		arg_s = arg_i;
 	arg_s = calloc(sizeof(t_args *), 1);
+	p_struct_arg_setnull(arg_s);
+
 }
 
 /*
@@ -49,6 +64,7 @@ void	p_line_s_init(t_pars_start *line_i, char *line)
 	int		i;
 	//t_args	*tmp;
 
+	split = NULL;
 	p_struct_arg_init(line_i, NULL);
 	split = ft_split(line, '|');
 	i = 0;

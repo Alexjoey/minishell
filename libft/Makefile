@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amylle <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/14 14:54:05 by amylle            #+#    #+#              #
-#    Updated: 2024/05/10 14:57:09 by amylle           ###   ########.fr        #
+#    Updated: 2024/10/03 03:21:29 by tlaverge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ OBJS 		= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 CC			= cc
 RM			= rm -rf
-CFLAGS		= -Wall -Werror -Wextra -I$(INC_DIR)
+CFLAGS		= -Wall -Werror -Wextra -I$(INC_DIR) -g3 -O0
 
 NAME		= libft.a
 #---------------------------Messages--------------------------------------------
