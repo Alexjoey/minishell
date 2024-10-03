@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:17:10 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/03 03:19:11 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 13:43:50 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,9 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell ~> ");
-		if (parser_input(line))
+		if (line)
 		{
+			tools->parser = parser_input(line);
 			add_history(line);
 			execute(tools->parser, tools);
 			free (line);	

@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 14:23:55 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/02 22:47:16 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 13:44:46 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_H
 
 # include <stdbool.h>
+# include <stdio.h>
+# include "../../libft/inc/libft.h"
 
 typedef struct s_start	t_pars_start;
 typedef struct s_args	t_args;
@@ -56,15 +58,15 @@ typedef struct s_start
 	t_args			*args_start;
 }	t_pars_start;
 
-bool	parser_input(char *line);
+t_pars_start	*parser_input(char *line);
 
-void	p_line_s_init(t_pars_start *line_i, char *line);
-bool	p_fil_inset_arg(t_pars_start *line_i, char *arg);
+void			p_line_s_init(t_pars_start *line_i, char *line);
+bool			p_fil_inset_arg(t_pars_start *line_i, char *arg);
 
-void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
+void			p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 
-int		p_u_get_size_total(t_args *arg_list);
-char	*p_u_get_std_in(t_pars_start *parser);
-char	*p_u_get_std_out(t_pars_start *parser);
+int				p_u_get_size_total(t_args *arg_list);
+char			*p_u_get_std_in(t_pars_start *parser);
+char			*p_u_get_std_out(t_pars_start *parser);
 
 #endif

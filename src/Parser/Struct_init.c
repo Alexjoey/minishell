@@ -6,11 +6,11 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:10:14 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/03 03:30:06 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 13:23:09 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "Parser.h"
 
 static void	p_struct_arg_setnull(t_args *arg)
 {

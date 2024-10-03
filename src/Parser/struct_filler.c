@@ -6,11 +6,11 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:30:11 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/02 22:48:47 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 13:23:07 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "Parser.h"
 
 static void	p_join_str_extracted(t_args *arg, char **join)
 {

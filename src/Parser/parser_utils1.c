@@ -6,11 +6,11 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:47:59 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/02 22:58:01 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/03 13:22:56 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "Parser.h"
 /*List of functions that helps navigating the Struct*/
 //TBA
 
