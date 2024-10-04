@@ -36,5 +36,5 @@ typedef struct s_tools
 //returns -1 if nothing is found
 int		find_envp_index(char **envp, char *path);
 void	free_array(char **array);
-
+void	reset_parser(t_pars_start *parser);
 #endif

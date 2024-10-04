@@ -15,15 +15,15 @@
 
 int	do_builtin(t_tools *tools, char **args)
 {
-	if (!ft_strncmp(args[0], "cd", 3))
+	if (!ft_strncmp(args[0], "cd", ft_strlen(args[0])))
 		return (cd_builtin(args, tools));
-	if (!ft_strncmp(args[0], "echo", 5))
+	if (!ft_strncmp(args[0], "echo", ft_strlen(args[0])))
 		return (echo_builtin(args));
-	if (!ft_strncmp(args[0], "pwd", 4))
+	if (!ft_strncmp(args[0], "pwd", ft_strlen(args[0])))
 		return (pwd_builtin(args, tools));
-	if (!ft_strncmp(args[0], "env", 4))
+	if (!ft_strncmp(args[0], "env", ft_strlen(args[0])))
 		return (env_builtin(args, tools));
-	if (!ft_strncmp(args[0], "exit", 5))
+	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
 		exit_builtin(args, tools);
 	return (EXIT_FAILURE);
 }
