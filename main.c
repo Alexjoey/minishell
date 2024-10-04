@@ -107,9 +107,8 @@ int	main(int argc, char **argv, char **envp)
 			tools->parser = parser_input(line);
 			add_history(line);
 			execute(tools->parser->args_start, tools);
-			free (line);	
+			free (line);
 		}
 		reset_parser(tools->parser);
-		printf("end of while loop\n");
 	}
 }

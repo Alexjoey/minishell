@@ -104,7 +104,7 @@ int	handle_input_redirection(char *std_in)
 	return (EXIT_SUCCESS);
 }
 
-int	handle_output_redirection(char	*std_o)
+int	handle_output_redirection(char *std_o)
 {
 	int	fd;
 
@@ -176,9 +176,9 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 
 int	nofork_builtin(char **array)
 {
-	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) ||\
+	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) || \
 		!ft_strncmp(array[0], "cd", ft_strlen(array[0])))
-			return (true);
+		return (true);
 	return (false);
 }
 
@@ -188,8 +188,11 @@ int	execute(t_args *args, t_tools *tools)
 	int		pipefd[2];
 
 	if (tools->parser->x_args == 1 && nofork_builtin(args->split) == true)
+	{
 		tools->errornum = do_builtin(tools, args->split);
-	else while (args)
+		return (0);
+	}
+	while (args)
 	{
 		tools->errornum = make_fork(args, tools, pipefd);
 		args = args->nxt;
