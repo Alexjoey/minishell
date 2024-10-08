@@ -11,22 +11,48 @@
 /* ************************************************************************** */
 
 #include "Parser.h"
-/*
-static void	p_join_str_extracted(t_args *arg, char **join)
-{
-	int		idx;
-	char	*ret;
 
-	idx = 2;
-	ret = ft_strjoin(join[0], join[1]);
-	while (join[idx])
-	{
-		ret = ft_strjoinfree(ret, join[idx]);
-		idx++;
-	}
-	arg->extracted = ret;
+static char	*p_make_charp(char c)
+{
+	char	*str;
+
+	str = (char *)malloc(2 * sizeof(char));
+
+	if (str == NULL)
+		return (NULL);
+
+	str[0] = c;
+	str[1] = '\0';
+
+	return (str);
 }
-*/
+
+static void	p_perentisy_check(t_args *arg)
+{
+	int		i;
+	char	*tmp;
+	char	*c;
+
+	tmp = NULL;
+	i = 0;
+	while (arg->str[i])
+	{
+		c = p_make_charp(arg->str[i]);
+		if (arg->str[i] == (char)34 || arg->str[i] == (char)39)
+		{
+			ft_strjoinfree(tmp, " ");
+			ft_strjoinfree(tmp, c);
+			ft_strjoinfree(tmp, " ");
+		}
+		else
+			ft_strjoinfree(tmp, c);
+		i++;
+		free(c);
+	}
+	arg->split = ft_split(tmp, ' ');
+	free(tmp);
+}
+
 static void	p_fil_type_arg(t_args *new, char *arg)
 {
 	int		idx;
@@ -34,8 +60,11 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 
 	idx = 0;
 	new->str = arg;
-	new->split = ft_split(arg, ' ');
 	tmp = ft_split(arg, ' ');
+	if (ft_strchr(new->str, (char)34) || ft_strchr(new->str, (char)39))
+		p_perentisy_check(new);
+	else
+		new->split = ft_split(arg, ' ');
 	while (new->split[idx])
 	{
 		if (ft_strchr(new->split[idx], '$'))
@@ -47,7 +76,8 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 			tmp[idx] = new->split[idx];
 		idx++;
 	}
-	//p_join_str_extracted(new, tmp);
+	new->split = tmp;
+	ft_freearray(tmp);
 }
 
 /*
