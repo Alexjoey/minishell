@@ -57,7 +57,7 @@ void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
 	init phase of the executor struct
 	Null all needed vars to then fill them with precious DATA :D
 */
-void	p_line_s_init(t_pars_start *line_i, char *line)
+void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
 {
 	char	**split;
 	int		i;
@@ -69,7 +69,7 @@ void	p_line_s_init(t_pars_start *line_i, char *line)
 	i = 0;
 	while (split[i])
 	{
-		if (!p_fil_inset_arg(line_i, split[i]))
+		if (!p_fil_inset_arg(line_i, split[i], tools))
 		{
 			/*ERROR MANAGEMENT if adding arg fails (malloc or unexpected arg)*/
 		}

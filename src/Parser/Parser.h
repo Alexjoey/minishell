@@ -19,6 +19,7 @@
 
 typedef struct s_start	t_pars_start;
 typedef struct s_args	t_args;
+typedef struct s_tools	t_tools;
 
 /*
 	str			= Raw split data from Readline
@@ -54,10 +55,10 @@ typedef struct s_start
 	t_args			*args_start;
 }	t_pars_start;
 
-t_pars_start	*parser_input(char *line);
+t_pars_start	*parser_input(char *line, t_tools *tools);
 
-void			p_line_s_init(t_pars_start *line_i, char *line);
-bool			p_fil_inset_arg(t_pars_start *line_i, char *arg);
+void			p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools);
+bool			p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool);
 
 void			p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 

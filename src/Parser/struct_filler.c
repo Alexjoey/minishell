@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parser.h"
+#include "../minishell.h"
 
 static char	*p_make_charp(char c)
 {
@@ -38,14 +38,15 @@ static void	p_perentisy_check(t_args *arg)
 	while (arg->str[i])
 	{
 		c = p_make_charp(arg->str[i]);
-		if (arg->str[i] == (char)34 || arg->str[i] == (char)39)
+		if (arg->str[i] == (char)34 || arg->str[i] == (char)39
+			|| arg->str[i] == (char)36)
 		{
-			ft_strjoinfree(tmp, " ");
-			ft_strjoinfree(tmp, c);
-			ft_strjoinfree(tmp, " ");
+			tmp = ft_strjoinfree(tmp, " ");
+			tmp = ft_strjoinfree(tmp, c);
+			tmp = ft_strjoinfree(tmp, " ");
 		}
 		else
-			ft_strjoinfree(tmp, c);
+			tmp = ft_strjoinfree(tmp, c);
 		i++;
 		free(c);
 	}
@@ -53,14 +54,14 @@ static void	p_perentisy_check(t_args *arg)
 	free(tmp);
 }
 
-static void	p_fil_type_arg(t_args *new, char *arg)
+static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 {
 	int		idx;
-	char	**tmp;
+	char	*tmp;
+	int		tidx;
 
 	idx = 0;
 	new->str = arg;
-	tmp = ft_split(arg, ' ');
 	if (ft_strchr(new->str, (char)34) || ft_strchr(new->str, (char)39))
 		p_perentisy_check(new);
 	else
@@ -69,15 +70,16 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 	{
 		if (ft_strchr(new->split[idx], '$'))
 		{
-			tmp[idx] = getenv(new->split[idx]++);
-			new->split[idx]--;
+			tidx = find_envp_index(tools->envp, new->split[idx + 1]);
+			if (idx != -1)
+			{
+				tmp = ft_strdup(tools->envp[tidx]);
+				free(new->split[idx + 1]);
+				new->split[idx + 1] = tmp;
+			}
 		}
-		else
-			tmp[idx] = new->split[idx];
 		idx++;
 	}
-	new->split = tmp;
-	ft_freearray(tmp);
 }
 
 /*
@@ -85,7 +87,7 @@ static void	p_fil_type_arg(t_args *new, char *arg)
 	WIP need to add Maloc shit all temp code for now
 	Will add a 'new' link in the list in the last pos
 */
-bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
+bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool)
 {
 	t_args			*curr;
 	t_args			*new;
@@ -95,7 +97,6 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
 	new = ft_calloc(1, sizeof(t_args));
 	if (!new)
 		return (false);
-	//p_struct_arg_init(NULL, new);
 	if (line_i->x_args <= idx)
 		line_i->x_args = idx;
 	if (line_i->args_start)
@@ -111,6 +112,6 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg)
 		line_i->args_start = new;
 	new->init_s = line_i;
 	new->index = idx;
-	p_fil_type_arg(new, arg);
+	p_fil_type_arg(new, arg, tool);
 	return (true);
 }

@@ -12,11 +12,11 @@
 
 #include "Parser.h"
 
-t_pars_start	*parser_input(char *line)
+t_pars_start	*parser_input(char *line, t_tools *tools)
 {
 	t_pars_start	*line_s;
 
 	line_s = ft_calloc(sizeof(t_pars_start), 1);
-	p_line_s_init(line_s, line);
+	p_line_s_init(line_s, line, tools);
 	return (line_s);
 }

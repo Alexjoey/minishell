@@ -104,7 +104,7 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell ~> ");
 		if (line)
 		{
-			tools->parser = parser_input(line);
+			tools->parser = parser_input(line, tools);
 			add_history(line);
 			execute(tools->parser->args_start, tools);
 			free (line);
