@@ -32,6 +32,15 @@ typedef struct s_tools
 	int						errornum;
 }	t_tools;
 
+typedef struct s_global
+{
+	bool	in_cmd;
+	bool	in_heredoc;
+	bool	stophdoc;
+}		t_global;
+
+extern t_global g_global;
+
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found
 int		find_envp_index(char **envp, char *path);

@@ -46,6 +46,7 @@ int	find_cmd(char **split, t_tools *tools)
 
 	i = -1;
 	pathcmd = NULL;
+	signal(SIGQUIT, SIG_DFL);
 	if (isbuiltin(split[0]))
 		exit(do_builtin(tools, split));
 	if (!access(split[0], F_OK))
@@ -67,14 +68,16 @@ int	handle_heredoc(char *delimiter)
 	int		fd;
 
 	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	g_global.in_heredoc = true;
 	line = readline("heredoc> ");
-	while (ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0)
+	while (ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0 && g_global.stophdoc == false)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free (line);
 		line = readline("heredoc> ");
 	}
+	g_global.in_heredoc = false;
 	free (line);
 	close (fd);
 	fd = open(".tmpheredoc", O_RDONLY);
@@ -82,6 +85,8 @@ int	handle_heredoc(char *delimiter)
 		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
 	unlink(".tmpheredoc");
+	if (g_global.stophdoc == true)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
