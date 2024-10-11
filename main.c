@@ -86,6 +86,7 @@ void	reset_parser(t_pars_start *parser)
 		free_array (args->split);
 		args = args->nxt;
 	}
+	free (parser->args_start);
 	free (parser->std_o);
 	free (parser->std_in);
 	free (parser);
@@ -101,6 +102,7 @@ int	free_tools(t_tools *tools)
 	free_array(tools->envp);
 	free_array(tools->paths);
 	free (tools);
+	rl_clear_history();
 	return (0);
 }
 
@@ -122,8 +124,14 @@ void	sigint_handler(int signal)
 	rl_redisplay();
 }
 
+int	event(void)
+{
+	return (EXIT_SUCCESS);
+}
+
 void	init_signals(void)
 {
+	rl_event_hook = event;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
