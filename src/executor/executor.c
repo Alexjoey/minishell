@@ -94,17 +94,17 @@ int	handle_input_redirection(char *std_in)
 {
 	int	fd;
 
-	if (ft_strncmp("< ", std_in, 2) == 0)
+	if (ft_strncmp("<", std_in, 2) == 0)
 	{
 		fd = open(std_in + 2, O_RDONLY);
 		if (fd < 0)
 			return (ft_error("minishell: infile: No such file or directory: " \
-					, std_in + 2));
+					, std_in + 1));
 		if (dup2(fd, STDIN_FILENO) < 0)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close (fd);
 	}
-	else if (handle_heredoc(std_in + 3) == EXIT_FAILURE)
+	else if (handle_heredoc(std_in + 2) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

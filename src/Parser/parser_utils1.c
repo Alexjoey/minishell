@@ -34,6 +34,8 @@ int	p_u_get_size_total(t_args *arg_list)
 	return (i);
 }
 
+//strnstr will try to find any substring in a string, u need to use strncmp
+//+ this function does not need parser fed to it, just feeding it the split is fine
 char	*p_u_get_std_in(t_pars_start *parser)
 {
 	int	i;
@@ -49,11 +51,11 @@ char	*p_u_get_std_in(t_pars_start *parser)
 				|| (ft_strnstr(parser->args_start->split[i], "<<",
 						ft_strlen(parser->args_start->split[i]))))
 				{
-					tmp = ft_strjoin(parser->args_start->split[i - 1],
-					parser->args_start->split[i]);
-					free(parser->args_start->split[i - 1]);
-					parser->args_start->split[i - 1] = NULL;
+					tmp = ft_strjoin(parser->args_start->split[i],
+					parser->args_start->split[i + 1]);
+					free(parser->args_start->split[i + 1]);
 					free(parser->args_start->split[i]);
+					parser->args_start->split[i] = NULL;
 					return (tmp);
 				}
 			i++;
