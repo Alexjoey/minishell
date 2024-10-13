@@ -34,33 +34,44 @@ int	p_u_get_size_total(t_args *arg_list)
 	return (i);
 }
 
-//strnstr will try to find any substring in a string, u need to use strncmp
-//+ this function does not need parser fed to it,
-//just feeding it the split is fine
+//give index of the < << >> >, itll free remove, and rejoin the split so the
+//input after it wont just get removed and leak
+void	free_and_join_stdinorout_split(char **split, int	i)
+{
+	free (split[i]);
+	free (split[i + 1]);
+	while (split[i + 2])
+	{
+		split[i] = split[i + 2];
+		i++;
+	}
+	split[i] = NULL;
+}
+
+//made it readable and work properly for now
+//still has issues because < and << could have invalid input after or 
+//if theres input after < or << it will just disappear and leak
 char	*p_u_get_std_in(t_pars_start *parser)
 {
-	int		i;
+	int	i;
 	char	*tmp;
+	char 	**split;
 
 	i = 0;
 	if (parser->x_args > 0)
+		return (NULL);
+	split = parser->args_start->split;
+	while (split[i])
 	{
-		while (parser->args_start->split[i])
+		if ((!ft_strncmp(split[i], "<", ft_strlen(split[i])) ||
+			!ft_strncmp(split[i], "<<", ft_strlen(split[i])))
+			&& split[i + 1])
 		{
-			if ((ft_strnstr(parser->args_start->split[i], "<",
-						ft_strlen(parser->args_start->split[i])))
-				|| (ft_strnstr(parser->args_start->split[i], "<<",
-						ft_strlen(parser->args_start->split[i]))))
-			{
-				tmp = ft_strjoin(parser->args_start->split[i],
-						parser->args_start->split[i + 1]);
-				free(parser->args_start->split[i + 1]);
-				free(parser->args_start->split[i]);
-				parser->args_start->split[i] = NULL;
-				return (tmp);
-			}
-			i++;
+			tmp = ft_strjoin(split[i], split[i + 1]);
+			free_and_join_stdinorout_split(split, i);
+			return (tmp);
 		}
+		i++;
 	}
 	return (NULL);
 }
@@ -73,27 +84,21 @@ char	*p_u_get_std_out(t_pars_start *parser)
 
 	i = 0;
 	curr = parser->args_start;
-	if (parser->x_args > 0)
+	if (parser->x_args <= 0)
+		return (NULL);
+	while(curr->nxt)
+		curr = curr->nxt;
+	while (curr->split[i])
 	{
-		while (curr->nxt)
-			curr = curr->nxt;
-		while (curr->split[i])
+		if ((!ft_strncmp(curr->split[i], ">", ft_strlen(curr->split[i])) ||
+			!ft_strncmp(curr->split[i], ">>", ft_strlen(curr->split[i])))
+			&& curr->split[i + 1])
 		{
-			if ((ft_strnstr(curr->split[i], ">",
-						ft_strlen(curr->split[i])))
-				|| (ft_strnstr(curr->split[i], ">>",
-						ft_strlen(curr->split[i]))))
-			{
-				tmp = ft_strjoin(curr->split[i],
-						curr->split[i + 1]);
-				free(curr->split[i]);
-				curr->split[i] = NULL;
-				free(curr->split[i + 1]);
-				return (tmp);
-			}
-
-			i++;
+			tmp = ft_strjoin(curr->split[i], curr->split[i + 1]);
+			free_and_join_stdinorout_split(curr->split, i);
+			return (tmp);
 		}
+		i++;
 	}
 	return (NULL);
 }

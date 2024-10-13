@@ -94,7 +94,7 @@ int	handle_input_redirection(char *std_in)
 {
 	int	fd;
 
-	if (ft_strncmp("<", std_in, 2) == 0)
+	if (ft_strncmp("<<", std_in, 2) != 0)
 	{
 		fd = open(std_in + 2, O_RDONLY);
 		if (fd < 0)
@@ -113,10 +113,10 @@ int	handle_output_redirection(char *std_o)
 {
 	int	fd;
 
-	if (ft_strncmp("> ", std_o, 2) == 0)
-		fd = open(std_o + 2, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
+	if (ft_strncmp(">>", std_o, 2) == 0)
+		fd = open(std_o + 2, O_RDWR | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
 	else
-		fd = open(std_o + 3, O_RDWR | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+		fd = open(std_o + 1, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	if (fd < 0)
 		return (ft_error("minishell: outfile: No such file or directory: " \
 				, std_o + 2));
