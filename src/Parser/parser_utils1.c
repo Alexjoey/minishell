@@ -35,10 +35,11 @@ int	p_u_get_size_total(t_args *arg_list)
 }
 
 //strnstr will try to find any substring in a string, u need to use strncmp
-//+ this function does not need parser fed to it, just feeding it the split is fine
+//+ this function does not need parser fed to it,
+//just feeding it the split is fine
 char	*p_u_get_std_in(t_pars_start *parser)
 {
-	int	i;
+	int		i;
 	char	*tmp;
 
 	i = 0;
@@ -50,14 +51,14 @@ char	*p_u_get_std_in(t_pars_start *parser)
 						ft_strlen(parser->args_start->split[i])))
 				|| (ft_strnstr(parser->args_start->split[i], "<<",
 						ft_strlen(parser->args_start->split[i]))))
-				{
-					tmp = ft_strjoin(parser->args_start->split[i],
-					parser->args_start->split[i + 1]);
-					free(parser->args_start->split[i + 1]);
-					free(parser->args_start->split[i]);
-					parser->args_start->split[i] = NULL;
-					return (tmp);
-				}
+			{
+				tmp = ft_strjoin(parser->args_start->split[i],
+						parser->args_start->split[i + 1]);
+				free(parser->args_start->split[i + 1]);
+				free(parser->args_start->split[i]);
+				parser->args_start->split[i] = NULL;
+				return (tmp);
+			}
 			i++;
 		}
 	}
@@ -74,7 +75,7 @@ char	*p_u_get_std_out(t_pars_start *parser)
 	curr = parser->args_start;
 	if (parser->x_args > 0)
 	{
-		while(curr->nxt)
+		while (curr->nxt)
 			curr = curr->nxt;
 		while (curr->split[i])
 		{
@@ -82,14 +83,14 @@ char	*p_u_get_std_out(t_pars_start *parser)
 						ft_strlen(curr->split[i])))
 				|| (ft_strnstr(curr->split[i], ">>",
 						ft_strlen(curr->split[i]))))
-				{
-					tmp = ft_strjoin(curr->split[i],
-					curr->split[i + 1]);
-					free(curr->split[i]);
-					curr->split[i] = NULL;
-					free(curr->split[i + 1]);
-					return (tmp);
-				}
+			{
+				tmp = ft_strjoin(curr->split[i],
+						curr->split[i + 1]);
+				free(curr->split[i]);
+				curr->split[i] = NULL;
+				free(curr->split[i + 1]);
+				return (tmp);
+			}
 
 			i++;
 		}

@@ -32,25 +32,31 @@ static void	p_perentisy_check(t_args *arg)
 	int		i;
 	char	*tmp;
 	char	*c;
+	bool	quote;
 
 	tmp = NULL;
+	quote = false;
 	i = 0;
 	while (arg->str[i])
 	{
 		c = p_make_charp(arg->str[i]);
-		if (arg->str[i] == (char)34 || arg->str[i] == (char)39
-			|| arg->str[i] == (char)36)
+		if (arg->str[i] == (char)39
+				|| ((arg->str[i] == (char)34) && !(arg->str[i - 1] == (char) 92)))
 		{
-			tmp = ft_strjoinfree(tmp, " ");
-			tmp = ft_strjoinfree(tmp, c);
-			tmp = ft_strjoinfree(tmp, " ");
+			tmp = ft_strjoinfree(tmp, "\n");
+			if (quote)
+				quote = false;
+			else
+				quote = true;
 		}
+		else if (arg->str[i] == (char)32 && !quote)
+			tmp = ft_strjoinfree(tmp, "\n");
 		else
 			tmp = ft_strjoinfree(tmp, c);
 		i++;
 		free(c);
 	}
-	arg->split = ft_split(tmp, ' ');
+	arg->split = ft_split(tmp, (char) 10);
 	free(tmp);
 }
 
@@ -68,7 +74,8 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 		new->split = ft_split(arg, ' ');
 	while (new->split[idx])
 	{
-		if (ft_strchr(new->split[idx], '$'))
+		if (ft_strchr(new->split[idx], '$')
+			&& !(ft_strchr(new->split[idx], (char) 39)))
 		{
 			tidx = find_envp_index(tools->envp, new->split[idx + 1]);
 			if (idx != -1)
