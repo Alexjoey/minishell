@@ -58,7 +58,7 @@ char	*p_u_get_std_in(t_pars_start *parser)
 	char 	**split;
 
 	i = 0;
-	if (parser->x_args > 0)
+	if (parser->x_args <= 0)
 		return (NULL);
 	split = parser->args_start->split;
 	while (split[i])
