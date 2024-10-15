@@ -14,8 +14,11 @@ SRC_DIR	= ./src
 INC_DIR	= ./inc
 OBJ_DIR	= ./obj
 
-SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c ./src/builtins/exit_builtin.c \
-				 ./src/Parser/parser_utils1.c ./src/Parser/parser.c ./src/Parser/struct_filler.c ./src/Parser/Struct_init.c
+SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c \
+		  ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c \
+		  ./src/builtins/exit_builtin.c ./src/Parser/parser_utils1.c ./src/Parser/parser.c \
+		  ./src/Parser/struct_filler.c ./src/Parser/Struct_init.c ./src/executor/signals.c
+
 #SRCS	= $(wildcard src/*.c) #$(wildcard src/*.h)
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC		= cc

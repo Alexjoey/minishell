@@ -47,7 +47,7 @@ t_tools	*init_tools(char **envp)
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
-	g_global.in_cmd = 0;
+	g_global.in_fork = 0;
 	g_global.in_heredoc = 0;
 	return (tools);
 }
@@ -77,63 +77,25 @@ void	reset_parser(t_pars_start *parser)
 {
 	t_args	*args;
 
-	args = parser->args_start;
-	while (args)
+	if (parser)
 	{
-		if (args->prev)
-			free(args->prev);
-		free (args->str);
-		free_array (args->split);
-		args = args->nxt;
+		args = parser->args_start;
+		while (args)
+		{
+			if (args->prev)
+				free(args->prev);
+			free (args->str);
+			free_array (args->split);
+			args = args->nxt;
+		}
+		free (parser->args_start);
+		free (parser->std_o);
+		free (parser->std_in);
 	}
-	free (parser->args_start);
-	free (parser->std_o);
-	free (parser->std_in);
 	free (parser);
 	g_global.stophdoc = false;
-	g_global.in_cmd = false;
+	g_global.in_fork = false;
 	g_global.in_heredoc = false;
-}
-
-//line = NULL only happens if ctrl-d is pressed,
-//which makes this function run, free and exit minshell
-int	free_tools(t_tools *tools)
-{
-	free_array(tools->envp);
-	free_array(tools->paths);
-	free (tools);
-	rl_clear_history();
-	return (0);
-}
-
-void	sigint_handler(int signal)
-{
-	(void) signal;
-	if (g_global.in_heredoc == false)
-		ft_putstr_fd("\n", STDERR_FILENO);
-	if (g_global.in_cmd)
-	{
-		g_global.stophdoc = true;
-		rl_replace_line("", 0);
-		rl_redisplay();
-		rl_done = 1;
-		return ;
-	}
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-int	event(void)
-{
-	return (EXIT_SUCCESS);
-}
-
-void	init_signals(void)
-{
-	rl_event_hook = event;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
 }
 
 int	main(int argc, char **argv, char **envp)

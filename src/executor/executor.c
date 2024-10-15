@@ -69,6 +69,7 @@ int	handle_heredoc(char *delimiter)
 
 	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 	g_global.in_heredoc = true;
+	g_global.stophdoc = false;
 	line = readline("heredoc> ");
 	while (ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0 && g_global.stophdoc == false)
 	{
@@ -160,11 +161,13 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 		fd_in = pipefd[0];
 	if (args->nxt)
 		pipe(pipefd);
+	g_global.in_fork = true;
 	pid = fork();
 	if (pid < 0)
 		return (ft_error("minishell: Failed to create fork", NULL));
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (handle_pipes(args, tools, pipefd, fd_in) == EXIT_FAILURE)
 			exit (1);
 		find_cmd(args->split, tools);

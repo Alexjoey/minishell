@@ -35,7 +35,7 @@ typedef struct s_tools
 
 typedef struct s_global
 {
-	bool	in_cmd;
+	bool	in_fork;
 	bool	in_heredoc;
 	bool	stophdoc;
 }		t_global;
@@ -47,4 +47,6 @@ extern t_global g_global;
 int		find_envp_index(char **envp, char *path);
 void	free_array(char **array);
 void	reset_parser(t_pars_start *parser);
+void	init_signals(void);
+int		free_tools(t_tools *tools);
 #endif
