@@ -60,21 +60,55 @@ static void	p_perentisy_check(t_args *arg)
 	free(tmp);
 }
 
-static char	*p_fil_env_s(char* split)
+static char	*strdup_till_space(char *str)
 {
-	int	i;
+	int		i;
+	char	*ret;
+	int		len;
+
+	len = 0;
+	while(str[len] && str[len] != ' ')
+		len++;
+	ret = malloc(sizeof(char) * (len + 1));
+	i = -1;
+	while (len > ++i)
+		ret[i] = str[i];
+	return (ret);
+}
+
+static char	*replace_dollarsigns(char *str, t_tools *tools)
+{
+	int		i;
+	int		envp_i;
+	char	*path_var;
+	char	*endofstr;
+	char	*ret;
 
 	i = 0;
-	while(split[i])
-		if (split[i] = '$')
-		
+	ret = NULL;
+	while (str[i])
+	{
+		if (str[i] == '$')
+		{
+			path_var = strdup_till_space(&str[i + 1]);
+			envp_i = find_envp_index(tools->envp, path_var);
+			endofstr = ft_strchr(&str[i], ' ');
+			str[i] = '\0';
+			ret = ft_strjoin(str, tools->envp[envp_i]);
+			if (endofstr)
+				ret = ft_strjoinfree(ret, endofstr);
+			free (str);
+			str = ret;
+			i += ft_strlen(tools->envp[envp_i]);
+		}
+		i++;
+	}
+	return (ret);
 }
 
 static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 {
 	int		idx;
-	char	*tmp;
-	int		tidx;
 
 	idx = 0;
 	new->str = arg;
@@ -87,13 +121,7 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 		if (ft_strchr(new->split[idx], '$')
 			&& !(ft_strchr(new->split[idx], (char) 39)))
 		{
-			tidx = find_envp_index(tools->envp, p_fil_env_s(new->split[idx]), true);
-			if (idx != -1)
-			{
-				tmp = ft_strdup(tools->envp[tidx]);
-				free(new->split[idx + 1]);
-				new->split[idx + 1] = tmp;
-			}
+			new->split[idx] = replace_dollarsigns(new->split[idx], tools);
 		}
 		idx++;
 	}
