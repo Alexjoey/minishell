@@ -60,6 +60,16 @@ static void	p_perentisy_check(t_args *arg)
 	free(tmp);
 }
 
+static char	*p_fil_env_s(char* split)
+{
+	int	i;
+
+	i = 0;
+	while(split[i])
+		if (split[i] = '$')
+		
+}
+
 static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 {
 	int		idx;
@@ -77,7 +87,7 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 		if (ft_strchr(new->split[idx], '$')
 			&& !(ft_strchr(new->split[idx], (char) 39)))
 		{
-			tidx = find_envp_index(tools->envp, new->split[idx + 1]);
+			tidx = find_envp_index(tools->envp, p_fil_env_s(new->split[idx]), true);
 			if (idx != -1)
 			{
 				tmp = ft_strdup(tools->envp[tidx]);

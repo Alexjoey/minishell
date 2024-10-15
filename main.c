@@ -52,15 +52,30 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
-int	find_envp_index(char **envp, char *path)
+int	find_envp_index(char **envp, char *path, bool free)
 {
-	int	i;
+	int		i;
+	bool	pas;
 
 	i = -1;
-	while (envp[++i])
-		if (ft_strncmp(envp[i], path, ft_strlen(path)) == 0)
-			return (i);
-	return (-1);
+	pas = false;
+	if (path)
+	{
+		while (envp[++i])
+			if (ft_strncmp(envp[i], path, ft_strlen(path)) == 0)
+			{
+				pas = true;
+				break
+			}
+	}
+	else
+		return(-1);
+	if (free)
+		free(path)
+	if (pas)
+		return(i);
+	else
+		return (-1);
 }
 
 void	free_array(char **array)
