@@ -26,7 +26,7 @@ int	pwd_builtin(char **args, t_tools *tools)
 	}
 	else
 	{
-		i = find_envp_index(tools->envp, "PWD=");
+		i = find_envp_index(tools->envp, "PWD");
 		ft_putendl_fd(tools->envp[i] + 4, STDOUT_FILENO);
 		return (EXIT_SUCCESS);
 	}

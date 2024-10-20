@@ -33,12 +33,12 @@ void	change_pwd(t_tools *tools)
 	char	*temp_pwd;
 	int		i;
 
-	i = find_envp_index(tools->envp, "PWD=");
+	i = find_envp_index(tools->envp, "PWD");
 	temp_pwd = tools->envp[i];
-	i = find_envp_index(tools->envp, "OLDPWD=");
+	i = find_envp_index(tools->envp, "OLDPWD");
 	free (tools->envp[i]);
 	tools->envp[i] = ft_strjoin("OLDPWD=", (temp_pwd + ft_strlen("PWD=")));
-	i = find_envp_index(tools->envp, "PWD=");
+	i = find_envp_index(tools->envp, "PWD");
 	free (tools->envp[i]);
 	cwd = getcwd(NULL, 0);
 	tools->envp[i] = ft_strjoin("PWD=", cwd);

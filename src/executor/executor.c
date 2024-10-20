@@ -47,7 +47,7 @@ char	**get_paths(char **envp)
 
 	path = NULL;
 	splitpath = NULL;
-	i = find_envp_index(envp, "PATH=");
+	i = find_envp_index(envp, "PATH");
 	if (i == -1)
 		return (NULL);
 	path = (envp[i] + ft_strlen("PATH="));

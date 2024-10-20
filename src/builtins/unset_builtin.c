@@ -25,35 +25,54 @@ int	unset_errors(char **args)
 			return (ft_error("unset: not a valid parameter name: ", args[i]));
 	return (EXIT_SUCCESS);
 }
-int	unset_builtin(char	**args, t_tools *tools)
+
+size_t	ft_arrlen(char **s)
 {
 	int	i;
-	int	j;
-	int	envp_i;
-	char	**tmp;
 
 	i = 0;
-	if (unset_errors(args) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	envp_i = find_envp_index(tools->envp, args[1]);
+	while (s && s[i])
+		i++;
+	return (i);
+}
+
+int	unset_var(char *arg, t_tools *tools)
+{
+	int		j;
+	int		envp_i;
+	char	**tmp;
+	int		i;
+
+	envp_i = find_envp_index(tools->envp, arg);
 	if (envp_i == -1)
 		return (EXIT_SUCCESS);
-	while (tools->envp[i])
-		i++;
-	tmp = ft_calloc(sizeof(char *), i);
+	tmp = ft_calloc(sizeof(char *), ft_arrlen(tools->envp));
+	if (!tmp)
+		return (ft_error("unset: malloc failure ermm", NULL));
 	i = 0;
 	j = 0;
 	while(tools->envp[i + j])
 	{
 		if (i == envp_i)
-		{
-			free(tools->envp[i]);
 			j++;
-		}
 		tmp[i] = tools->envp[i + j];
 		i++;
 	}
+	free(tools->envp[envp_i]);
 	free(tools->envp);
 	tools->envp = tmp;
-		return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
+}
+
+int	unset_builtin(char	**args, t_tools *tools)
+{
+	int	i;
+
+	if (unset_errors(args) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	i = 0;
+	while (args[++i])
+		if (unset_var(args[i], tools) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

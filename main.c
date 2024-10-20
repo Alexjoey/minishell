@@ -25,19 +25,23 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
-//need to implement to strncmp till =
-//and $?
-//and toupper the path input
+//need to add $?
 int	find_envp_index(char **envp, char *path)
 {
-	int		i;
+	int	i;
+	int	eq_len;
 
 	i = -1;
 	if (path)
 	{
 		while (envp[++i])
-			if (ft_strncmp(envp[i], path, ft_strlen(path)) == 0)
+		{
+			eq_len = 0;
+			while (envp[i][eq_len] && envp[i][eq_len] != '=')
+				eq_len++;
+			if (!ft_strncmp(envp[i], path, eq_len) && path[eq_len] == '\0')
 				return (i);
+		}
 	}
 	return(-1);
 }
