@@ -14,40 +14,11 @@
 
 t_global g_global;
 
-//just gets $PATH
-char	**get_paths(char **envp)
-{
-	int		i;
-	char	*path;
-	char	**splitpath;
-	char	*tmp;
-
-	path = NULL;
-	splitpath = NULL;
-	i = find_envp_index(envp, "PATH=");
-	if (i == -1)
-		return (NULL);
-	path = (envp[i] + ft_strlen("PATH="));
-	splitpath = ft_split(path, ':');
-	i = -1;
-	while (splitpath[++i])
-	{
-		if (splitpath[i][ft_strlen(splitpath[i]) - 1] != '/')
-		{
-			tmp = ft_strjoin(splitpath[i], "/");
-			free (splitpath[i]);
-			splitpath[i] = tmp;
-		}
-	}
-	return (splitpath);
-}
-
 t_tools	*init_tools(char **envp)
 {
 	t_tools	*tools;
 
 	tools = ft_calloc(1, sizeof(t_tools));
-	tools->paths = get_paths(envp);
 	tools->envp = ft_duparray(envp);
 	g_global.in_fork = 0;
 	g_global.in_heredoc = 0;

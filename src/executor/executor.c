@@ -37,27 +37,58 @@ int	ft_error(char *errormessage, char *filename)
 	return (1);
 }
 
+//returns a split $PATH
+char	**get_paths(char **envp)
+{
+	int		i;
+	char	*path;
+	char	**splitpath;
+	char	*tmp;
+
+	path = NULL;
+	splitpath = NULL;
+	i = find_envp_index(envp, "PATH=");
+	if (i == -1)
+		return (NULL);
+	path = (envp[i] + ft_strlen("PATH="));
+	splitpath = ft_split(path, ':');
+	i = -1;
+	while (splitpath[++i])
+	{
+		if (splitpath[i][ft_strlen(splitpath[i]) - 1] != '/')
+		{
+			tmp = ft_strjoin(splitpath[i], "/");
+			free (splitpath[i]);
+			splitpath[i] = tmp;
+		}
+	}
+	return (splitpath);
+}
+
 //tries to find command in either bin/paths or just relative path
 //then executes
 int	find_cmd(char **split, t_tools *tools)
 {
 	char	*pathcmd;
 	int		i;
+	char	**path;
 
 	i = -1;
 	pathcmd = NULL;
+	path = get_paths(tools->envp);
 	signal(SIGQUIT, SIG_DFL);
 	if (isbuiltin(split[0]))
 		exit(do_builtin(tools, split));
 	if (!access(split[0], F_OK))
 		execve(split[0], split, tools->envp);
-	while (tools->paths && tools->paths[++i])
+	while (path && path[++i])
 	{
-		pathcmd = ft_strjoin(tools->paths[i], split[0]);
+		pathcmd = ft_strjoin(path[i], split[0]);
 		if (!access(pathcmd, F_OK))
 			execve(pathcmd, split, tools->envp);
 		free(pathcmd);
 	}
+	free_array(path);
 	ft_error("minishell: command not found: ", split[0]);
 	exit (127);
 }

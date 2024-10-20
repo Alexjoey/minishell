@@ -13,6 +13,18 @@
 #include "builtins.h"
 #include "../minishell.h"
 
+int	unset_errors(char **args)
+{
+	int	i;
+
+	i = -1;
+	if (!args[1])
+		return (ft_error("minishell: unset: not enough arguments", NULL));
+	while (args[++i])
+		if (ft_strchr(args[i], '=') || ft_strchr(args[i], '/'))
+			return (ft_error("unset: not a valid parameter name: ", args[i]));
+	return (EXIT_SUCCESS);
+}
 int	unset_builtin(char	**args, t_tools *tools)
 {
 	int	i;
@@ -21,7 +33,11 @@ int	unset_builtin(char	**args, t_tools *tools)
 	char	**tmp;
 
 	i = 0;
+	if (unset_errors(args) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	envp_i = find_envp_index(tools->envp, args[1]);
+	if (envp_i == -1)
+		return (EXIT_SUCCESS);
 	while (tools->envp[i])
 		i++;
 	tmp = ft_calloc(sizeof(char *), i);
@@ -39,10 +55,5 @@ int	unset_builtin(char	**args, t_tools *tools)
 	}
 	free(tools->envp);
 	tools->envp = tmp;
-	if (ft_strncmp(args[1], "PATH", ft_strlen(args[1])) == 0)
-	{
-		free_array(tools->paths);
-		tools->paths = get_paths(tools->envp);
-	}
-	return (EXIT_SUCCESS);
+		return (EXIT_SUCCESS);
 }

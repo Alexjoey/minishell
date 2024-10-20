@@ -27,7 +27,6 @@ typedef struct s_start	t_pars_start;
 //general struct where you throw everything in yk
 typedef struct s_tools
 {
-	char					**paths;
 	char					**envp;
 	struct s_start			*parser;
 	int						errornum;

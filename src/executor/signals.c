@@ -17,7 +17,6 @@
 int	free_tools(t_tools *tools)
 {
 	free_array(tools->envp);
-	free_array(tools->paths);
 	free (tools);
 	rl_clear_history();
 	return (0);

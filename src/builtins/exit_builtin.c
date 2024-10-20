@@ -17,7 +17,6 @@ void	free_everything(t_tools *tools)
 {
 	reset_parser(tools->parser);
 	free_array(tools->envp);
-	free_array(tools->paths);
 	free (tools);
 }
 

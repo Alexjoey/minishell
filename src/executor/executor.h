@@ -20,5 +20,6 @@ typedef struct s_start	t_pars_start;
 typedef struct s_args	t_args;
 
 int		execute(t_args *args, t_tools *tools);
+int		ft_error(char *errormessage, char *filename);
 
 #endif

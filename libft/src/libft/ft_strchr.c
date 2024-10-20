@@ -12,6 +12,7 @@
 
 #include "libft.h"
 
+//returns NULL if nothing is found, else returns pointer to str starting from c
 char	*ft_strchr(const char *s, int c)
 {
 	int			i;
