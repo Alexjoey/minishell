@@ -25,5 +25,7 @@ int	do_builtin(t_tools *tools, char **args)
 		return (env_builtin(args, tools));
 	if (!ft_strncmp(args[0], "exit", ft_strlen(args[0])))
 		exit_builtin(args, tools);
+	if (!ft_strncmp(args[0], "unset", ft_strlen(args[0])))
+		return (unset_builtin(args, tools));
 	return (EXIT_FAILURE);
 }

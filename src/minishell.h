@@ -49,4 +49,6 @@ void	free_array(char **array);
 void	reset_parser(t_pars_start *parser);
 void	init_signals(void);
 int		free_tools(t_tools *tools);
+char	**get_paths(char **envp);
+
 #endif

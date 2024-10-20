@@ -22,5 +22,6 @@ int		cd_builtin(char **args, t_tools *tools);
 int		pwd_builtin(char **args, t_tools *tools);
 int		env_builtin(char **args, t_tools *tools);
 void	exit_builtin(char **args, t_tools *tools);
+int		unset_builtin(char	**args, t_tools *tools);
 
 #endif

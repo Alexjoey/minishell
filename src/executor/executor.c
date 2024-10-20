@@ -51,7 +51,7 @@ int	find_cmd(char **split, t_tools *tools)
 		exit(do_builtin(tools, split));
 	if (!access(split[0], F_OK))
 		execve(split[0], split, tools->envp);
-	while (tools->paths[++i])
+	while (tools->paths && tools->paths[++i])
 	{
 		pathcmd = ft_strjoin(tools->paths[i], split[0]);
 		if (!access(pathcmd, F_OK))
@@ -185,7 +185,8 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 int	nofork_builtin(char **array)
 {
 	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) || \
-		!ft_strncmp(array[0], "cd", ft_strlen(array[0])))
+		!ft_strncmp(array[0], "cd", ft_strlen(array[0])) || \
+		!ft_strncmp(array[0], "unset", ft_strlen(array[0])))
 		return (true);
 	return (false);
 }

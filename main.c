@@ -25,6 +25,8 @@ char	**get_paths(char **envp)
 	path = NULL;
 	splitpath = NULL;
 	i = find_envp_index(envp, "PATH=");
+	if (i == -1)
+		return (NULL);
 	path = (envp[i] + ft_strlen("PATH="));
 	splitpath = ft_split(path, ':');
 	i = -1;
@@ -52,6 +54,9 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
+//need to implement to strncmp till =
+//and $?
+//and toupper the path input
 int	find_envp_index(char **envp, char *path)
 {
 	int		i;
@@ -70,6 +75,8 @@ void	free_array(char **array)
 {
 	int	i;
 
+	if (!array)
+		return ;
 	i = -1;
 	while (array[++i])
 		free(array[i]);
