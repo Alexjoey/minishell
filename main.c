@@ -76,7 +76,6 @@ void	reset_parser(t_pars_start *parser)
 			free_array (args->split);
 			args = args->nxt;
 		}
-		free (parser->args_start);
 		free (parser->std_o);
 		free (parser->std_in);
 	}

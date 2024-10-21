@@ -43,29 +43,74 @@ static int	find_envp_index_export(char **envp, char *path)
 	return (-1);
 }
 
+char	**arraddback(char **array, char *str)
+{
+	char	**tmp;
+	int		i;
+	tmp = ft_calloc(sizeof(char *), ft_arrlen(array) + 2);
+	if (!tmp)
+	{
+		ft_error("export malloc fail", NULL);
+		return (NULL);
+	}
+	i = -1;
+	while (array[++i])
+		tmp[i] = array[i];
+	tmp[i] = ft_strdup(str);
+	return (tmp);
+}
+
+int	check_valid_identifier(char c)
+{
+	return (c == '|' || c == '<' || c == '>' || c == '[' || c == ']'
+		|| c == '\'' || c == '\"' || c == ' ' || c == ',' || c == '.'
+		|| c == ':' || c == '/' || c == '{' || c == '}' || c == '+'
+		|| c == '^' || c == '%' || c == '#' || c == '@' || c == '!'
+		|| c == '~' || c == '-' || c == '?' || c == '&' || c == '*');
+}
+
+int	valid_parameter(char *str)
+{
+	int	i;
+
+	if (ft_isdigit(str[0]))
+		return (ft_error("not an identifier: ", str));
+	if (!ft_strchr(str, '='))
+		return (EXIT_FAILURE);
+	if (str[0] == '=')
+		return (ft_error("invalid export input: ", str));
+	i = -1;
+	while (str[++i] != '=')
+		if (check_valid_identifier(str[i]))
+			return (ft_error("not an identifier: ", str));
+	return (EXIT_SUCCESS);
+}
+
 int	export_builtin(char	**args, t_tools *tools)
 {
 	int		envp_i;
 	char	**tmp;
 	int		i;
-
-	envp_i = find_envp_index_export(tools->envp, args[1]);
-	if (envp_i >= 0)
+	
+	if (!args[1])
+		return (env_builtin(args, tools));
+	i = 0;
+	while (args[++i])
 	{
-		free (tools->envp[envp_i]);
-		tools->envp[envp_i] = ft_strdup(args[1]);
-	}
-	else
-	{
-		tmp = ft_calloc(sizeof(char *), ft_arrlen(tools->envp) + 2);
-		if (!tmp)
-			return (ft_error("export malloc fail", NULL));
-		i = -1;
-		while (tools->envp[++i])
-			tmp[i] = tools->envp[i];
-		tmp[i] = ft_strdup(args[1]);
-		free (tools->envp);
-		tools->envp = tmp;
+		envp_i = find_envp_index_export(tools->envp, args[i]);
+		if (valid_parameter(args[i]) == false)
+			return (EXIT_FAILURE);
+		else if (envp_i >= 0)
+		{
+			free (tools->envp[envp_i]);
+			tools->envp[envp_i] = ft_strdup(args[i]);
+		}
+		else
+		{
+			tmp = arraddback(tools->envp, args[i]);
+			free (tools->envp);
+			tools->envp = tmp;
+		}
 	}
 	return (EXIT_SUCCESS);
 }
