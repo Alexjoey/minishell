@@ -76,7 +76,6 @@ int	find_cmd(char **split, t_tools *tools)
 	i = -1;
 	pathcmd = NULL;
 	path = get_paths(tools->envp);
-	signal(SIGQUIT, SIG_DFL);
 	if (isbuiltin(split[0]))
 		exit(do_builtin(tools, split));
 	if (!access(split[0], F_OK))
@@ -116,7 +115,6 @@ int	handle_heredoc(char *d)
 	if (dup2(fd, STDIN_FILENO) < 0)
 		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
-	unlink(".tmpheredoc");
 	if (g_global.stophdoc == true)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -188,6 +186,7 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 	int	status;
 	int	fd_in;
 
+	signal(SIGQUIT, sigquit_handler);
 	if (args->prev)
 		fd_in = pipefd[0];
 	if (args->nxt)

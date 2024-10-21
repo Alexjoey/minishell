@@ -45,6 +45,13 @@ void	sigint_handler(int signal)
 	}
 }
 
+void	sigquit_handler(int sig)
+{
+	ft_putstr_fd("quit (core dumped) (not rlly im lying)", STDERR_FILENO);
+	ft_putnbr_fd(sig, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
 void	init_signals(void)
 {
 	signal(SIGINT, sigint_handler);

@@ -81,6 +81,7 @@ void	reset_parser(t_pars_start *parser)
 		free (parser->std_in);
 	}
 	free (parser);
+	unlink(".tmpheredoc");
 	g_global.stophdoc = false;
 	g_global.in_fork = false;
 	g_global.in_heredoc = false;
