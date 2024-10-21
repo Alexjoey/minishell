@@ -98,25 +98,20 @@ int	handle_heredoc(char *d)
 	int		fd;
 
 	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
-	g_global.in_heredoc = true;
-	g_global.stophdoc = false;
 	line = readline("heredoc> ");
-	while (ft_strncmp(d, line, ft_strlen(d)) != 0 && g_global.stophdoc == false)
+	while (ft_strncmp(d, line, ft_strlen(d)) != 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free (line);
 		line = readline("heredoc> ");
 	}
-	g_global.in_heredoc = false;
 	free (line);
 	close (fd);
 	fd = open(".tmpheredoc", O_RDONLY);
 	if (dup2(fd, STDIN_FILENO) < 0)
 		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
-	if (g_global.stophdoc == true)
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -191,7 +186,6 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 		fd_in = pipefd[0];
 	if (args->nxt)
 		pipe(pipefd);
-	g_global.in_fork = true;
 	pid = fork();
 	if (pid < 0)
 		return (ft_error("minishell: Failed to create fork", NULL));
@@ -202,6 +196,7 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 			exit (1);
 		find_cmd(args->split, tools);
 	}
+	signal(SIGINT, sigint_fork_handler);
 	waitpid(pid, &status, 0);
 	if (args->prev)
 		close(fd_in);

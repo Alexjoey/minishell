@@ -32,22 +32,24 @@ typedef struct s_tools
 	int						errornum;
 }	t_tools;
 
-typedef struct s_global
-{
-	bool	in_fork;
-	bool	in_heredoc;
-	bool	stophdoc;
-}		t_global;
-
+//todo:
+//stdin/out for every arg
+//restructuring the fork
+//multiple heredocs
+//
+//stdin/out errorchecking in parser
+//pipe error checking in parser
+//
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found
 int		find_envp_index(char **envp, char *path);
 void	free_array(char **array);
-void	reset_parser(t_pars_start *parser);
+void	reset_parser(t_pars_start *parser, t_tools *tools);
 void	init_signals(void);
 int		free_tools(t_tools *tools);
 char	**get_paths(char **envp);
 void	sigquit_handler(int sig);
-extern t_global			g_global;
+void	sigint_fork_handler(int signal);
+extern int				g_signum;
 
 #endif

@@ -26,16 +26,6 @@ static int	unset_errors(char **args)
 	return (EXIT_SUCCESS);
 }
 
-static size_t	ft_arrlen(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
-}
-
 static int	unset_var(char *arg, t_tools *tools)
 {
 	int		j;

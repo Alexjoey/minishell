@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <unistd.h>
 
 //line = NULL only happens if ctrl-d is pressed,
 //which makes this function run, free and exit minshell
@@ -24,32 +25,25 @@ int	free_tools(t_tools *tools)
 
 void	sigint_handler(int signal)
 {
-	(void) signal;
-	if (g_global.in_heredoc == true)
-	{
-		rl_done = 1;
-		g_global.stophdoc = true;
-		write(STDERR_FILENO, "\n", 1);
-		rl_on_new_line();
-		rl_redisplay();
-		return ;
-	}
 	write(STDERR_FILENO, "\n", 1);
-	if (g_global.in_fork == true)
-		return ;
-	if (g_global.in_fork == false)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_signum = signal;
 }
 
-void	sigquit_handler(int sig)
+void	sigquit_handler(int signal)
 {
 	ft_putstr_fd("quit (core dumped) (not rlly im lying)", STDERR_FILENO);
-	ft_putnbr_fd(sig, STDERR_FILENO);
+	ft_putnbr_fd(signal, STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);
+	g_signum = signal;
+}
+
+void	sigint_fork_handler(int signal)
+{
+	write(STDERR_FILENO, "\n", 1);
+	g_signum = signal;
 }
 
 void	init_signals(void)

@@ -12,7 +12,7 @@
 
 #include "src/minishell.h"
 
-t_global	g_global;
+int		g_signum;
 
 t_tools	*init_tools(char **envp)
 {
@@ -20,8 +20,7 @@ t_tools	*init_tools(char **envp)
 
 	tools = ft_calloc(1, sizeof(t_tools));
 	tools->envp = ft_duparray(envp);
-	g_global.in_fork = 0;
-	g_global.in_heredoc = 0;
+	g_signum = 0;
 	return (tools);
 }
 
@@ -61,7 +60,7 @@ void	free_array(char **array)
 	free(array);
 }
 
-void	reset_parser(t_pars_start *parser)
+void	reset_parser(t_pars_start *parser, t_tools *tools)
 {
 	t_args	*args;
 
@@ -81,9 +80,11 @@ void	reset_parser(t_pars_start *parser)
 	}
 	free (parser);
 	unlink(".tmpheredoc");
-	g_global.stophdoc = false;
-	g_global.in_fork = false;
-	g_global.in_heredoc = false;
+	if (g_signum != 0)
+	{
+		tools->errornum = g_signum;
+		g_signum = 0;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -98,9 +99,9 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	}
 	tools = init_tools(envp);
-	init_signals();
 	while (1)
 	{
+		init_signals();
 		line = readline("minishell ~> ");
 		if (line == NULL)
 			return (free_tools(tools));
@@ -108,6 +109,6 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		free (line);
 		execute(tools->parser->args_start, tools);
-		reset_parser(tools->parser);
+		reset_parser(tools->parser, tools);
 	}
 }

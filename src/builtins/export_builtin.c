@@ -13,16 +13,6 @@
 #include "../minishell.h"
 #include "builtins.h"
 
-static size_t	ft_arrlen(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
-}
-
 static int	find_envp_index_export(char **envp, char *path)
 {
 	int	i;
@@ -47,7 +37,8 @@ char	**arraddback(char **array, char *str)
 {
 	char	**tmp;
 	int		i;
-	tmp = ft_calloc(sizeof(char *), ft_arrlen(array) + 2);
+
+	tmp = ft_calloc(sizeof (char *), ft_arrlen(array) + 2);
 	if (!tmp)
 	{
 		ft_error("export malloc fail", NULL);
@@ -91,7 +82,7 @@ int	export_builtin(char	**args, t_tools *tools)
 	int		envp_i;
 	char	**tmp;
 	int		i;
-	
+
 	if (!args[1])
 		return (env_builtin(args, tools));
 	i = 0;
