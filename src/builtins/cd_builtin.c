@@ -12,6 +12,7 @@
 
 #include "../minishell.h"
 
+//
 int	specific_path(t_tools *tools, char *path)
 {
 	int	i;
