@@ -60,14 +60,14 @@ static void	p_perentisy_check(t_args *arg)
 	free(tmp);
 }
 
-static char	*strdup_till_space(char *str)
+static char	*strdup_till_spaceordollar(char *str)
 {
 	int		i;
 	char	*ret;
 	int		len;
 
 	len = 0;
-	while(str[len] && str[len] != ' ')
+	while(str[len] && str[len] != ' ' && str[len] != '$')
 		len++;
 	ret = ft_calloc(sizeof(char), (len + 1));
 	if (!ret)
@@ -78,6 +78,29 @@ static char	*strdup_till_space(char *str)
 	return (ret);
 }
 
+//sorry for this clusterfuck, fuck the norm
+static char	*substitute_dollarsign(char *str, char *endofstr, int envp_i, t_tools *tools)
+{
+	char	*ret;
+
+	ret = NULL;
+	if (envp_i == -2)
+	{
+		endofstr = ft_strjoinfree(ft_itoa(tools->errornum), endofstr);
+		ret = ft_strjoin(str, endofstr);
+		free (endofstr);
+	}
+	else if (envp_i >= 0)
+	{
+		ret = ft_strjoin(str, ft_strchr(tools->envp[envp_i], '=') + 1);
+		ret = ft_strjoinfree(ret, endofstr);
+	}
+	else
+		ret = ft_strjoin(str, endofstr);
+	return (ret);
+}
+
+//fully works now, with ? and no spaces inbetween
 static char	*replace_dollarsigns(char *str, t_tools *tools)
 {
 	int		i;
@@ -86,25 +109,22 @@ static char	*replace_dollarsigns(char *str, t_tools *tools)
 	char	*endofstr;
 	char	*ret;
 
-	i = 0;
+	i = -1;
 	ret = NULL;
-	while (str[i])
+	while (str && str[++i])
 	{
 		if (str[i] == '$')
 		{
-			path_var = strdup_till_space(&str[i + 1]);
+			path_var = strdup_till_spaceordollar(&str[i + 1]);
 			envp_i = find_envp_index(tools->envp, path_var);
+			endofstr = &str[i] + 1 + ft_strlen(path_var);
 			free (path_var);
-			endofstr = ft_strchr(&str[i], ' ');
 			str[i] = '\0';
-			ret = ft_strjoin(str, ft_strchr(tools->envp[envp_i], '=') + 1);
-			if (endofstr)
-				ret = ft_strjoinfree(ret, endofstr);
+			ret = substitute_dollarsign(str, endofstr, envp_i, tools);
 			free (str);
 			str = ret;
-			i += ft_strlen(ft_strchr(tools->envp[envp_i], '='));
+			i = -1;
 		}
-		i++;
 	}
 	return (ret);
 }

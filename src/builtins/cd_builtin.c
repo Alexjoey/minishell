@@ -18,15 +18,17 @@ int	specific_path(t_tools *tools, char *path)
 	int	ret;
 
 	i = find_envp_index(tools->envp, path);
-	ret = chdir((tools->envp[i] + ft_strlen(path)));
-	if (ret != 0)
+	if (i == -1)
 	{
 		write(STDERR_FILENO, path, ft_strlen(path) - 1);
 		write(STDERR_FILENO, " not set\n", ft_strlen(" not set\n"));
+		return (EXIT_FAILURE);
 	}
+	ret = chdir((tools->envp[i] + ft_strlen(path)));
 	return (ret);
 }
 
+//need to change some shit here in case i unset shit
 void	change_pwd(t_tools *tools)
 {
 	char	*cwd;

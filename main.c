@@ -25,7 +25,8 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
-//need to add $?
+//returns -1 if it finds nothin, returns -2 if its supposed to be errornum
+//otherwise return index of path in envp
 int	find_envp_index(char **envp, char *path)
 {
 	int	i;
@@ -34,6 +35,8 @@ int	find_envp_index(char **envp, char *path)
 	i = -1;
 	if (path)
 	{
+		if (!ft_strncmp("?", path, 2))
+			return (-2);
 		while (envp[++i])
 		{
 			eq_len = 0;
