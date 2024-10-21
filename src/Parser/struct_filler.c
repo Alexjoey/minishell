@@ -69,7 +69,9 @@ static char	*strdup_till_space(char *str)
 	len = 0;
 	while(str[len] && str[len] != ' ')
 		len++;
-	ret = malloc(sizeof(char) * (len + 1));
+	ret = ft_calloc(sizeof(char), (len + 1));
+	if (!ret)
+		return (NULL);
 	i = -1;
 	while (len > ++i)
 		ret[i] = str[i];
@@ -92,14 +94,15 @@ static char	*replace_dollarsigns(char *str, t_tools *tools)
 		{
 			path_var = strdup_till_space(&str[i + 1]);
 			envp_i = find_envp_index(tools->envp, path_var);
+			free (path_var);
 			endofstr = ft_strchr(&str[i], ' ');
 			str[i] = '\0';
-			ret = ft_strjoin(str, tools->envp[envp_i]);
+			ret = ft_strjoin(str, ft_strchr(tools->envp[envp_i], '=') + 1);
 			if (endofstr)
 				ret = ft_strjoinfree(ret, endofstr);
 			free (str);
 			str = ret;
-			i += ft_strlen(tools->envp[envp_i]);
+			i += ft_strlen(ft_strchr(tools->envp[envp_i], '='));
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 01:54:50 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/03 16:57:50 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/21 05:43:53 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,6 +217,7 @@ int	nofork_builtin(char **array)
 {
 	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) || \
 		!ft_strncmp(array[0], "cd", ft_strlen(array[0])) || \
+		!ft_strncmp(array[0], "export", ft_strlen(array[0])) || \
 		!ft_strncmp(array[0], "unset", ft_strlen(array[0])))
 		return (true);
 	return (false);

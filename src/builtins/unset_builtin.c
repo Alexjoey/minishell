@@ -13,7 +13,7 @@
 #include "builtins.h"
 #include "../minishell.h"
 
-int	unset_errors(char **args)
+static int	unset_errors(char **args)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ int	unset_errors(char **args)
 	return (EXIT_SUCCESS);
 }
 
-size_t	ft_arrlen(char **s)
+static size_t	ft_arrlen(char **s)
 {
 	int	i;
 
@@ -36,7 +36,7 @@ size_t	ft_arrlen(char **s)
 	return (i);
 }
 
-int	unset_var(char *arg, t_tools *tools)
+static int	unset_var(char *arg, t_tools *tools)
 {
 	int		j;
 	int		envp_i;

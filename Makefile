@@ -18,7 +18,7 @@ SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builti
 		  ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c \
 		  ./src/builtins/exit_builtin.c ./src/Parser/parser_utils1.c ./src/Parser/parser.c \
 		  ./src/Parser/struct_filler.c ./src/Parser/Struct_init.c ./src/executor/signals.c \
-		  ./src/builtins/unset_builtin.c
+		  ./src/builtins/unset_builtin.c ./src/builtins/export_builtin.c
 
 #SRCS	= $(wildcard src/*.c) #$(wildcard src/*.h)
 OBJS	= $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

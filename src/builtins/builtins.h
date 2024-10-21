@@ -6,7 +6,7 @@
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 15:56:58 by amylle            #+#    #+#             */
-/*   Updated: 2024/09/15 05:59:44 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/21 05:43:33 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ int		pwd_builtin(char **args, t_tools *tools);
 int		env_builtin(char **args, t_tools *tools);
 void	exit_builtin(char **args, t_tools *tools);
 int		unset_builtin(char	**args, t_tools *tools);
+int	export_builtin(char	**args, t_tools *tools);
 
 #endif

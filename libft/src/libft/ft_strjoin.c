@@ -19,10 +19,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*res;
 
 	if (!s1)
-		return (NULL);
+		return (ft_strdup(s2));
 	if (!s2)
 		return (ft_strdup(s1));
-	
 	res = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!res)
 		return (NULL);
