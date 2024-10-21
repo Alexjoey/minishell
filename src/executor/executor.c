@@ -213,7 +213,7 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 	return (EXIT_FAILURE);
 }
 
-int	nofork_builtin(char **array)
+int	is_nofork_builtin(char **array)
 {
 	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) || \
 		!ft_strncmp(array[0], "cd", ft_strlen(array[0])) || \
@@ -228,7 +228,7 @@ int	execute(t_args *args, t_tools *tools)
 {
 	int		pipefd[2];
 
-	if (tools->parser->x_args == 1 && nofork_builtin(args->split) == true)
+	if (tools->parser->x_args == 1 && is_nofork_builtin(args->split) == true)
 	{
 		tools->errornum = do_builtin(tools, args->split);
 		return (0);

@@ -76,6 +76,7 @@ char	*p_u_get_std_in(t_pars_start *parser)
 	return (NULL);
 }
 
+//need to be able to handle no space inbetween
 char	*p_u_get_std_out(t_pars_start *parser)
 {
 	int		i;
