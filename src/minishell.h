@@ -39,8 +39,6 @@ typedef struct s_global
 	bool	stophdoc;
 }		t_global;
 
-extern t_global g_global;
-
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found
 int		find_envp_index(char **envp, char *path);
@@ -49,5 +47,6 @@ void	reset_parser(t_pars_start *parser);
 void	init_signals(void);
 int		free_tools(t_tools *tools);
 char	**get_paths(char **envp);
+extern t_global			g_global;
 
 #endif

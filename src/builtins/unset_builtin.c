@@ -51,7 +51,7 @@ static int	unset_var(char *arg, t_tools *tools)
 		return (ft_error("unset: malloc failure ermm", NULL));
 	i = 0;
 	j = 0;
-	while(tools->envp[i + j])
+	while (tools->envp[i + j])
 	{
 		if (i == envp_i)
 			j++;

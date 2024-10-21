@@ -93,7 +93,7 @@ int	find_cmd(char **split, t_tools *tools)
 	exit (127);
 }
 
-int	handle_heredoc(char *delimiter)
+int	handle_heredoc(char *d)
 {
 	char	*line;
 	int		fd;
@@ -102,7 +102,7 @@ int	handle_heredoc(char *delimiter)
 	g_global.in_heredoc = true;
 	g_global.stophdoc = false;
 	line = readline("heredoc> ");
-	while (ft_strncmp(delimiter, line, ft_strlen(delimiter)) != 0 && g_global.stophdoc == false)
+	while (ft_strncmp(d, line, ft_strlen(d)) != 0 && g_global.stophdoc == false)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);

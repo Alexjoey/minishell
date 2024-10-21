@@ -12,7 +12,7 @@
 
 #include "src/minishell.h"
 
-t_global g_global;
+t_global	g_global;
 
 t_tools	*init_tools(char **envp)
 {
@@ -46,7 +46,7 @@ int	find_envp_index(char **envp, char *path)
 				return (i);
 		}
 	}
-	return(-1);
+	return (-1);
 }
 
 void	free_array(char **array)

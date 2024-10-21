@@ -40,7 +40,7 @@ static int	find_envp_index_export(char **envp, char *path)
 				return (i);
 		}
 	}
-	return(-1);
+	return (-1);
 }
 
 int	export_builtin(char	**args, t_tools *tools)

@@ -65,5 +65,6 @@ void			p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 int				p_u_get_size_total(t_args *arg_list);
 char			*p_u_get_std_in(t_pars_start *parser);
 char			*p_u_get_std_out(t_pars_start *parser);
+char			*replace_dollarsigns(char *str, t_tools *tools);
 
 #endif
