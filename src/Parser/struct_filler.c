@@ -79,7 +79,7 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 }
 
 /*
-	filles all the needed args
+	fills all the needed args
 	WIP need to add Maloc shit all temp code for now
 	Will add a 'new' link in the list in the last pos
 */

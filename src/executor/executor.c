@@ -182,6 +182,7 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 	int	fd_in;
 
 	signal(SIGQUIT, sigquit_handler);
+	signal(SIGINT, SIG_IGN);
 	if (args->prev)
 		fd_in = pipefd[0];
 	if (args->nxt)
@@ -209,10 +210,10 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 
 int	is_nofork_builtin(char **array)
 {
-	if (!ft_strncmp(array[0], "exit", ft_strlen(array[0])) || \
-		!ft_strncmp(array[0], "cd", ft_strlen(array[0])) || \
-		!ft_strncmp(array[0], "export", ft_strlen(array[0])) || \
-		!ft_strncmp(array[0], "unset", ft_strlen(array[0])))
+	if (!ft_strncmp(array[0], "exit", ft_strlen("exit")) || \
+		!ft_strncmp(array[0], "cd", ft_strlen("cd")) || \
+		!ft_strncmp(array[0], "export", ft_strlen("export")) || \
+		!ft_strncmp(array[0], "unset", ft_strlen("unset")))
 		return (true);
 	return (false);
 }

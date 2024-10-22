@@ -64,27 +64,27 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 {
 	t_args	*args;
 
-	if (parser)
+	args = parser->args_start;
+	while (args)
 	{
-		args = parser->args_start;
-		while (args)
+		if (args->prev)
+			free(args->prev);
+		free (args->str);
+		free_array (args->split);
+		if (!args->nxt)
 		{
-			if (args->prev)
-				free(args->prev);
-			free (args->str);
-			free_array (args->split);
-			args = args->nxt;
+			free(args);
+			break;
 		}
-		free (parser->std_o);
-		free (parser->std_in);
+		args = args->nxt;
 	}
+	free (parser->std_o);
+	free (parser->std_in);
 	free (parser);
 	unlink(".tmpheredoc");
 	if (g_signum != 0)
-	{
 		tools->errornum = g_signum;
-		g_signum = 0;
-	}
+	g_signum = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
