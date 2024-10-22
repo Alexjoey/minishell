@@ -83,10 +83,11 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 	free (parser);
 	unlink(".tmpheredoc");
 	if (g_signum != 0)
-		tools->errornum = g_signum;
+		tools->errornum = 128 + g_signum;
 	g_signum = 0;
 }
 
+//shows directory as readline message, with colors etc
 char	*ft_readline(t_tools *tools)
 {
 	char	*cwd;

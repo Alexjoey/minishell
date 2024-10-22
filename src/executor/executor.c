@@ -203,6 +203,8 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 		close(fd_in);
 	if (args->nxt)
 		close(pipefd[1]);
+	if (WIFSIGNALED(status))
+		return (g_signum + 128);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (EXIT_FAILURE);

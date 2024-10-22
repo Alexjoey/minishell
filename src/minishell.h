@@ -36,7 +36,6 @@ typedef struct s_tools
 //stdin/out for every arg
 //restructuring the fork
 //multiple heredocs
-//cd  shit
 //
 //stdin/out errorchecking in parser
 //pipe error checking in parser
