@@ -24,42 +24,6 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
-//returns -1 if it finds nothin, returns -2 if its supposed to be errornum
-//otherwise return index of path in envp
-int	find_envp_index(char **envp, char *path)
-{
-	int	i;
-	int	eq_len;
-
-	i = -1;
-	if (path)
-	{
-		if (!ft_strncmp("?", path, 2))
-			return (-2);
-		while (envp[++i])
-		{
-			eq_len = 0;
-			while (envp[i][eq_len] && envp[i][eq_len] != '=')
-				eq_len++;
-			if (!ft_strncmp(envp[i], path, eq_len) && path[eq_len] == '\0')
-				return (i);
-		}
-	}
-	return (-1);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = -1;
-	while (array[++i])
-		free(array[i]);
-	free(array);
-}
-
 void	reset_parser(t_pars_start *parser, t_tools *tools)
 {
 	t_args	*args;
@@ -74,7 +38,7 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 		if (!args->nxt)
 		{
 			free(args);
-			break;
+			break ;
 		}
 		args = args->nxt;
 	}
