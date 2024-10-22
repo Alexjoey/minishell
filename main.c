@@ -87,6 +87,33 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 	g_signum = 0;
 }
 
+char	*ft_readline(t_tools *tools)
+{
+	char	*cwd;
+	char	*rl_text;
+	int		i;
+	char	*ret;
+
+	cwd = NULL;
+	rl_text = NULL;
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (readline("minishell > "));
+	i = find_envp_index(tools->envp, "HOME");
+	if (i >= 0 && ft_strnstr(cwd, tools->envp[i] + 5, ft_strlen(cwd)))
+		i = ft_strlen(tools->envp[i]) - 4;
+	else
+		i = 0;
+	rl_text = ft_strjoin("\e[36m", cwd + i);
+	rl_text = ft_strjoinfree(rl_text, " $ \e[0m");
+	free (cwd);
+	if (!rl_text)
+		return (readline("minishell > "));
+	ret = readline(rl_text);
+	free (rl_text);
+	return (ret);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
@@ -102,7 +129,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		init_signals();
-		line = readline("minishell ~> ");
+		line = ft_readline(tools);
 		if (line == NULL)
 			return (free_tools(tools));
 		tools->parser = parser_input(line, tools);

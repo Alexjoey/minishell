@@ -12,6 +12,7 @@
 
 #include "libft.h"
 
+//searches for little inside of big, for max of len
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
 	size_t	i;
