@@ -20,42 +20,40 @@ int	specific_path(t_tools *tools, char *path)
 
 	i = find_envp_index(tools->envp, path);
 	if (i == -1)
-	{
-		write(STDERR_FILENO, path, ft_strlen(path) - 1);
-		write(STDERR_FILENO, " not set\n", ft_strlen(" not set\n"));
-		return (EXIT_FAILURE);
-	}
-	ret = chdir((tools->envp[i] + ft_strlen(path)));
+		return (EXIT_SUCCESS);
+	ret = chdir(tools->envp[i] + ft_strlen(path) + 1);
+	if (!ft_strncmp(path, "OLDPWD", ft_strlen("OLDPWD")))
+		printf("%s\n", tools->envp[i] + ft_strlen(path) + 1);
 	return (ret);
 }
 
 //need to change some shit here in case i unset shit
-void	change_pwd(t_tools *tools)
+void	change_pwd(t_tools *tools, char *oldpwd)
 {
+	char	*tmp;
 	char	*cwd;
-	char	*temp_pwd;
-	int		i;
 
-	i = find_envp_index(tools->envp, "PWD");
-	temp_pwd = tools->envp[i];
-	i = find_envp_index(tools->envp, "OLDPWD");
-	free (tools->envp[i]);
-	tools->envp[i] = ft_strjoin("OLDPWD=", (temp_pwd + ft_strlen("PWD=")));
-	i = find_envp_index(tools->envp, "PWD");
-	free (tools->envp[i]);
+	tmp = ft_strjoin("OLDPWD=", oldpwd);
+	export_builtin((char *[]){"export", tmp, ""}, tools);
+	free (tmp);
+	free (oldpwd);
 	cwd = getcwd(NULL, 0);
-	tools->envp[i] = ft_strjoin("PWD=", cwd);
+	tmp = ft_strjoin("PWD=", cwd);
+	export_builtin((char *[]){"export", tmp, ""}, tools);
 	free (cwd);
+	free (tmp);
 }
 
 int	cd_builtin(char **array, t_tools *tools)
 {
-	int	ret;
+	int		ret;
+	char	*oldpwd;
 
+	oldpwd = getcwd(NULL, 0);
 	if (!array[1])
-		ret = specific_path(tools, "HOME=");
+		ret = specific_path(tools, "HOME");
 	else if (ft_strncmp(array[1], "-", 2) == 0)
-		ret = specific_path(tools, "OLDPWD=");
+		ret = specific_path(tools, "OLDPWD");
 	else
 	{
 		ret = chdir(array[1]);
@@ -67,7 +65,10 @@ int	cd_builtin(char **array, t_tools *tools)
 		}
 	}
 	if (ret != 0)
+	{
+		free (oldpwd);
 		return (EXIT_FAILURE);
-	change_pwd(tools);
+	}
+	change_pwd(tools, oldpwd);
 	return (EXIT_SUCCESS);
 }

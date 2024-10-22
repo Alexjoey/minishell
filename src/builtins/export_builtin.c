@@ -66,7 +66,7 @@ int	valid_parameter(char *str)
 
 	if (ft_isdigit(str[0]))
 		return (ft_error("not an identifier: ", str));
-	if (!ft_strchr(str, '='))
+	if (ft_strchr(str, '='))
 		return (EXIT_FAILURE);
 	if (str[0] == '=')
 		return (ft_error("invalid export input: ", str));
