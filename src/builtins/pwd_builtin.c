@@ -11,11 +11,14 @@
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <complex.h>
 
 int	pwd_builtin(char **args, t_tools *tools)
 {
-	int	i;
+	int		i;
+	char	*cwd;
 
+	(void) tools;
 	i = 0;
 	while (args[i])
 		i++;
@@ -26,11 +29,11 @@ int	pwd_builtin(char **args, t_tools *tools)
 	}
 	else
 	{
-		i = find_envp_index(tools->envp, "PWD");
-		if (i >= 0)
-			ft_putendl_fd(tools->envp[i] + 4, STDOUT_FILENO);
-		else
-			ft_putendl_fd("", STDOUT_FILENO);
+		cwd = getcwd(NULL, 0);
+		if (!cwd)
+			return (EXIT_FAILURE);
+		printf("%s\n", cwd);
+		free (cwd);
 		return (EXIT_SUCCESS);
 	}
 }
