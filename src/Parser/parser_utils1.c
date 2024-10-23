@@ -67,11 +67,9 @@ int	p_u_get_std_in(t_args *arg)
 			!ft_strncmp(split[i], "<<", ft_strlen(split[i])))
 			&& split[i + 1])
 		{
-			if (arg->std_in)
-				return (ft_error("Parse error near :", split[i]));
 			tmp = ft_strjoin(split[i], split[i + 1]);
 			free_and_join_stdinorout_split(split, i);
-			arg->std_in = tmp;
+			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
 			i--;
 		}
 		i++;
@@ -92,11 +90,9 @@ int	p_u_get_std_out(t_args *args)
 			!ft_strncmp(args->split[i], ">>", ft_strlen(args->split[i])))
 			&& args->split[i + 1])
 		{
-			if (args->std_o)
-				return (ft_error("Parse error near :", args->split[i]));
 			tmp = ft_strjoin(args->split[i], args->split[i + 1]);
 			free_and_join_stdinorout_split(args->split, i);
-			args->std_o = tmp;
+			ft_lstadd_back(&args->std_o, ft_lstnew(tmp));
 			i--;
 		}
 		i++;

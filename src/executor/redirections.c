@@ -19,7 +19,7 @@ int	handle_heredoc(char *d)
 	char	*line;
 	int		fd;
 
-	fd = open(".tmpheredoc", O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+	fd = open(".tmpheredoc", O_RDWR | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
 	line = readline("heredoc> ");
 	while (ft_strncmp(d, line, ft_strlen(d)) != 0)
 	{
@@ -87,10 +87,17 @@ int	handle_pipes(t_args *args, int pipefd[2], int fd_in)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close(pipefd[1]);
 	}
-	if (args->std_in)
-		if (handle_input_redirection(args->std_in) == EXIT_FAILURE)
+	while (args->std_in)
+	{
+		if (handle_input_redirection(args->std_in->content) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-	if (args->std_o)
-		return (handle_output_redirection(args->std_o));
+		args->std_in = args->std_in->next;
+	}
+	while (args->std_o)
+	{
+		if (handle_output_redirection(args->std_o->content) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		args->std_o = args->std_o->next;
+	}
 	return (EXIT_SUCCESS);
 }

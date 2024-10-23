@@ -35,8 +35,8 @@ typedef struct s_args
 	char				*str;
 	char				**split;
 	int					index;
-	char				*std_in;
-	char				*std_o;
+	t_list				*std_in;
+	t_list				*std_o;
 	struct s_start		*init_s;
 	t_args				*nxt;
 	t_args				*prev;

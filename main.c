@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft/inc/libft.h"
 #include "src/minishell.h"
 
 int		g_signum;
@@ -35,8 +36,8 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 			free(args->prev);
 		free (args->str);
 		free_array (args->split);
-		free (args->std_o);
-		free (args->std_in);
+		ft_lstclear(&args->std_o, free);
+		ft_lstclear(&args->std_in, free);
 		if (!args->nxt)
 		{
 			free(args);
