@@ -90,7 +90,7 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (handle_pipes(args, tools, pipefd, fd_in) == EXIT_FAILURE)
+		if (handle_pipes(args, pipefd, fd_in) == EXIT_FAILURE)
 			exit (1);
 		find_cmd(args->split, tools);
 	}

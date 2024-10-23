@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "Parser.h"
+#include "../minishell.h"
 /*List of functions that helps navigating the Struct*/
 //TBA
 
@@ -67,10 +68,11 @@ int	p_u_get_std_in(t_args *arg)
 			&& split[i + 1])
 		{
 			if (arg->std_in)
-				return (EXIT_FAILURE);
+				return (ft_error("Parse error near :", split[i]));
 			tmp = ft_strjoin(split[i], split[i + 1]);
 			free_and_join_stdinorout_split(split, i);
 			arg->std_in = tmp;
+			i--;
 		}
 		i++;
 	}
@@ -91,10 +93,11 @@ int	p_u_get_std_out(t_args *args)
 			&& args->split[i + 1])
 		{
 			if (args->std_o)
-				return (EXIT_FAILURE);
+				return (ft_error("Parse error near :", args->split[i]));
 			tmp = ft_strjoin(args->split[i], args->split[i + 1]);
 			free_and_join_stdinorout_split(args->split, i);
 			args->std_o = tmp;
+			i--;
 		}
 		i++;
 	}

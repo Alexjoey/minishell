@@ -33,9 +33,9 @@ typedef struct s_tools
 }	t_tools;
 
 //todo:
-//stdin/out for every arg
+//
 //restructuring the fork
-//multiple heredocs
+//multiple same redirections heredocs
 //
 //stdin/out errorchecking in parser
 //pipe error checking in parser

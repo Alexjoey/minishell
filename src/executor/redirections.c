@@ -73,12 +73,8 @@ int	handle_output_redirection(char *std_o)
 	return (EXIT_SUCCESS);
 }
 
-int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in)
+int	handle_pipes(t_args *args, int pipefd[2], int fd_in)
 {
-	(void) tools;
-	if (!args->prev && args->std_in)
-		if (handle_input_redirection(args->std_in) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
 	if (args->prev)
 	{
 		if (dup2(fd_in, STDIN_FILENO) < 0)
@@ -91,7 +87,10 @@ int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close(pipefd[1]);
 	}
-	if (!args->nxt && args->std_o)
+	if (args->std_in)
+		if (handle_input_redirection(args->std_in) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	if (args->std_o)
 		return (handle_output_redirection(args->std_o));
 	return (EXIT_SUCCESS);
 }

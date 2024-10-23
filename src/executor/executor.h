@@ -21,7 +21,7 @@ typedef struct s_args	t_args;
 
 int	execute(t_args *args, t_tools *tools);
 int	ft_error(char *errormessage, char *filename);
-int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in);
+int	handle_pipes(t_args *args, int pipefd[2], int fd_in);
 int	is_nofork_builtin(char **array);
 int	isbuiltin(char *str);
 
