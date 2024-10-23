@@ -46,60 +46,57 @@ void	free_and_join_stdinorout_split(char **split, int	i)
 		i++;
 	}
 	split[i] = NULL;
+	split[i + 1] = NULL;
 }
 
 //made it readable and work properly for now
 //still has issues because < and << could have invalid input after or 
 //if theres input after < or << it will just disappear and leak
-char	*p_u_get_std_in(t_pars_start *parser)
+int	p_u_get_std_in(t_args *arg)
 {
 	int	i;
 	char	*tmp;
-	char 	**split;
+	char	**split;
 
 	i = 0;
-	if (parser->x_args <= 0)
-		return (NULL);
-	split = parser->args_start->split;
+	split = arg->split;
 	while (split[i])
 	{
 		if ((!ft_strncmp(split[i], "<", ft_strlen(split[i])) ||
 			!ft_strncmp(split[i], "<<", ft_strlen(split[i])))
 			&& split[i + 1])
 		{
+			if (arg->std_in)
+				return (EXIT_FAILURE);
 			tmp = ft_strjoin(split[i], split[i + 1]);
 			free_and_join_stdinorout_split(split, i);
-			return (tmp);
+			arg->std_in = tmp;
 		}
 		i++;
 	}
-	return (NULL);
+	return (EXIT_SUCCESS);
 }
 
 //need to be able to handle no space inbetween
-char	*p_u_get_std_out(t_pars_start *parser)
+int	p_u_get_std_out(t_args *args)
 {
 	int		i;
-	t_args	*curr;
 	char	*tmp;
 
 	i = 0;
-	curr = parser->args_start;
-	if (parser->x_args <= 0)
-		return (NULL);
-	while(curr->nxt)
-		curr = curr->nxt;
-	while (curr->split[i])
+	while (args->split[i])
 	{
-		if ((!ft_strncmp(curr->split[i], ">", ft_strlen(curr->split[i])) ||
-			!ft_strncmp(curr->split[i], ">>", ft_strlen(curr->split[i])))
-			&& curr->split[i + 1])
+		if ((!ft_strncmp(args->split[i], ">", ft_strlen(args->split[i])) ||
+			!ft_strncmp(args->split[i], ">>", ft_strlen(args->split[i])))
+			&& args->split[i + 1])
 		{
-			tmp = ft_strjoin(curr->split[i], curr->split[i + 1]);
-			free_and_join_stdinorout_split(curr->split, i);
-			return (tmp);
+			if (args->std_o)
+				return (EXIT_FAILURE);
+			tmp = ft_strjoin(args->split[i], args->split[i + 1]);
+			free_and_join_stdinorout_split(args->split, i);
+			args->std_o = tmp;
 		}
 		i++;
 	}
-	return (NULL);
+	return (EXIT_SUCCESS);
 }

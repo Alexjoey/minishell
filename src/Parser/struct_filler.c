@@ -57,7 +57,7 @@ static void	p_perentisy_check(t_args *arg)
 	free(tmp);
 }
 
-static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
+static int	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 {
 	int		idx;
 
@@ -76,6 +76,9 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 		}
 		idx++;
 	}
+	if (p_u_get_std_out(new) && p_u_get_std_in(new))
+		return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 /*
@@ -107,6 +110,7 @@ bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool)
 		line_i->args_start = new;
 	new->init_s = line_i;
 	new->index = idx;
-	p_fil_type_arg(new, arg, tool);
+	if (!p_fil_type_arg(new, arg, tool))
+		return (EXIT_FAILURE);
 	return (true);
 }

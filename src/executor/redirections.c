@@ -75,8 +75,9 @@ int	handle_output_redirection(char *std_o)
 
 int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in)
 {
-	if (!args->prev && tools->parser->std_in)
-		if (handle_input_redirection(tools->parser->std_in) == EXIT_FAILURE)
+	(void) tools;
+	if (!args->prev && args->std_in)
+		if (handle_input_redirection(args->std_in) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	if (args->prev)
 	{
@@ -90,7 +91,7 @@ int	handle_pipes(t_args *args, t_tools *tools, int pipefd[2], int fd_in)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close(pipefd[1]);
 	}
-	if (!args->nxt && tools->parser->std_o)
-		return (handle_output_redirection(tools->parser->std_o));
+	if (!args->nxt && args->std_o)
+		return (handle_output_redirection(args->std_o));
 	return (EXIT_SUCCESS);
 }

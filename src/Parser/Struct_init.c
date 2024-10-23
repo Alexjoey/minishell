@@ -77,6 +77,4 @@ void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
 	}
 	free(split);
 	i = 0;
-	line_i->std_in = p_u_get_std_in(line_i);
-	line_i->std_o = p_u_get_std_out(line_i);
 }

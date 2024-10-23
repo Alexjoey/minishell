@@ -35,6 +35,8 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 			free(args->prev);
 		free (args->str);
 		free_array (args->split);
+		free (args->std_o);
+		free (args->std_in);
 		if (!args->nxt)
 		{
 			free(args);
@@ -42,8 +44,6 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 		}
 		args = args->nxt;
 	}
-	free (parser->std_o);
-	free (parser->std_in);
 	free (parser);
 	unlink(".tmpheredoc");
 	if (g_signum != 0)

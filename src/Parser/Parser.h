@@ -35,6 +35,8 @@ typedef struct s_args
 	char				*str;
 	char				**split;
 	int					index;
+	char				*std_in;
+	char				*std_o;
 	struct s_start		*init_s;
 	t_args				*nxt;
 	t_args				*prev;
@@ -50,8 +52,6 @@ typedef struct s_args
 typedef struct s_start
 {
 	int				x_args;
-	char			*std_in;
-	char			*std_o;
 	t_args			*args_start;
 }	t_pars_start;
 
@@ -63,8 +63,8 @@ bool			p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool);
 void			p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 
 int				p_u_get_size_total(t_args *arg_list);
-char			*p_u_get_std_in(t_pars_start *parser);
-char			*p_u_get_std_out(t_pars_start *parser);
+int				p_u_get_std_in(t_args *arg);
+int				p_u_get_std_out(t_args *arg);
 char			*replace_dollarsigns(char *str, t_tools *tools);
 
 #endif
