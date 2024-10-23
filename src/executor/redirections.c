@@ -19,14 +19,14 @@ int	handle_heredoc(char *d)
 	char	*line;
 	int		fd;
 
-	fd = open(".tmpheredoc", O_RDWR | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
+	fd = open(".tmpheredoc", O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	line = readline("heredoc> ");
 	while (ft_strncmp(d, line, ft_strlen(d)) != 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free (line);
-		line = readline("heredoc> ");
+		line = readline("> ");
 	}
 	free (line);
 	close (fd);

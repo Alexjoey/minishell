@@ -67,10 +67,10 @@ char	*ft_readline(t_tools *tools)
 		return (readline("minishell > "));
 	i = find_envp_index(tools->envp, "HOME");
 	if (i >= 0 && ft_strnstr(cwd, tools->envp[i] + 5, ft_strlen(cwd)))
-		i = ft_strlen(tools->envp[i]) - 4;
+		i = ft_strlen(tools->envp[i]) - 5;
 	else
 		i = 0;
-	rl_text = ft_strjoin("\e[36m", cwd + i);
+	rl_text = ft_strjoin("\e[36m~", cwd + i);
 	rl_text = ft_strjoinfree(rl_text, " $ \e[0m");
 	free (cwd);
 	if (!rl_text)
