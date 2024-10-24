@@ -14,6 +14,7 @@
 #include "executor.h"
 #include <fcntl.h>
 
+//need to add signal handling for ctrl-c, rest is all done basically
 int	handle_heredoc(char *delimit, char *filename)
 {
 	char	*line;
