@@ -34,12 +34,12 @@ typedef struct s_tools
 
 //todo:
 //
-//multiple same redirections heredocs
-//need to handle making the heredoc in the parser, not executor
+//heredoc signalhandling?
 //
 //stdin/out errorchecking in parser
 //pipe error checking in parser
 //whitespace shit
+//communicate to executor to not execute if theres parser error
 //
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found

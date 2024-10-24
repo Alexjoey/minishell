@@ -54,6 +54,8 @@ int	find_cmd(char **split, t_tools *tools)
 
 	i = -1;
 	pathcmd = NULL;
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
 	path = get_paths(tools->envp);
 	if (isbuiltin(split[0]))
 		exit(do_builtin(tools, split));
@@ -87,7 +89,6 @@ int	make_fork(t_args *arg, t_tools *tools, int pipefd[2])
 		return (ft_error("minishell: Failed to create fork", NULL));
 	if (arg->pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
 		if (handle_pipes(arg, pipefd, fd_in) == EXIT_FAILURE)
 			exit (1);
 		find_cmd(arg->split, tools);

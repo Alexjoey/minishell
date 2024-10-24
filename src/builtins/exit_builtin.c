@@ -18,6 +18,7 @@ void	free_everything(t_tools *tools)
 	reset_parser(tools->parser);
 	free_array(tools->envp);
 	free (tools);
+	rl_clear_history();
 }
 
 void	exit_builtin(char **args, t_tools *tools)

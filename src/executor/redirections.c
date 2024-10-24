@@ -23,6 +23,11 @@ int	handle_heredoc(char *delimit, char *filename)
 	line = readline("> ");
 	while (ft_strncmp(delimit, line, ft_strlen(delimit)) != 0)
 	{
+		if (!line)
+		{
+			ft_error("warning: delimited by eof instead of desired:", delimit);
+			break ;
+		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free (line);
