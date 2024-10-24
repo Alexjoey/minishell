@@ -40,8 +40,6 @@ static char	*sub_dollar(char *str, char *eofstr, int envp_i, t_tools *tools)
 	ret = NULL;
 	if (envp_i == -2)
 	{
-		if (g_signum > 0)
-			tools->errornum = 128 + g_signum;
 		eofstr = ft_strjoinfree(ft_itoa(tools->errornum), eofstr);
 		ret = ft_strjoin(str, eofstr);
 		free (eofstr);

@@ -25,7 +25,20 @@ t_tools	*init_tools(char **envp)
 	return (tools);
 }
 
-void	reset_parser(t_pars_start *parser, t_tools *tools)
+void	ft_unlink_heredocs(t_list	**std_in)
+{
+	t_list	*curr;
+
+	curr = *std_in;
+	while (curr)
+	{
+		if (!ft_strncmp(curr->content, "<<", 2))
+			unlink(curr->content + 2);
+		curr = curr->next;
+	}
+}
+
+void	reset_parser(t_pars_start *parser)
 {
 	t_args	*args;
 
@@ -37,6 +50,7 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 		free (args->str);
 		free_array (args->split);
 		ft_lstclear(&args->std_o, free);
+		ft_unlink_heredocs(&args->std_in);
 		ft_lstclear(&args->std_in, free);
 		if (!args->nxt)
 		{
@@ -46,10 +60,6 @@ void	reset_parser(t_pars_start *parser, t_tools *tools)
 		args = args->nxt;
 	}
 	free (parser);
-	unlink(".tmpheredoc");
-	if (g_signum != 0)
-		tools->errornum = 128 + g_signum;
-	g_signum = 0;
 }
 
 //shows directory as readline message, with colors etc
@@ -98,10 +108,13 @@ int	main(int argc, char **argv, char **envp)
 		line = ft_readline(tools);
 		if (line == NULL)
 			return (free_tools(tools));
+		if (g_signum != 0)
+			tools->errornum = g_signum + 128;
+		g_signum = 0;
 		tools->parser = parser_input(line, tools);
 		add_history(line);
 		free (line);
 		execute(tools->parser->args_start, tools);
-		reset_parser(tools->parser, tools);
+		reset_parser(tools->parser);
 	}
 }

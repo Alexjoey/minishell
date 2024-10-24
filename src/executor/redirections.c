@@ -14,14 +14,14 @@
 #include "executor.h"
 #include <fcntl.h>
 
-int	handle_heredoc(char *d)
+int	handle_heredoc(char *delimit, char *filename)
 {
 	char	*line;
 	int		fd;
 
-	fd = open(".tmpheredoc", O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
-	line = readline("heredoc> ");
-	while (ft_strncmp(d, line, ft_strlen(d)) != 0)
+	fd = open(filename, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
+	line = readline("> ");
+	while (ft_strncmp(delimit, line, ft_strlen(delimit)) != 0)
 	{
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
@@ -29,8 +29,6 @@ int	handle_heredoc(char *d)
 		line = readline("> ");
 	}
 	free (line);
-	if (dup2(fd, STDIN_FILENO) < 0)
-		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
 	return (EXIT_SUCCESS);
 }
@@ -39,18 +37,16 @@ int	handle_input_redirection(char *std_in)
 {
 	int	fd;
 
-	if (ft_strncmp("<<", std_in, 2) != 0)
-	{
+	if (ft_strncmp("<<", std_in, 2) == 0)
+		fd = open(std_in + 2, O_RDONLY);
+	else
 		fd = open(std_in + 1, O_RDONLY);
-		if (fd < 0)
-			return (ft_error("minishell: infile: No such file or directory: " \
-					, std_in + 1));
-		if (dup2(fd, STDIN_FILENO) < 0)
-			return (ft_error("minishell: Failed to create a pipe\n", NULL));
-		close (fd);
-	}
-	else if (handle_heredoc(std_in + 2) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	if (fd < 0)
+		return (ft_error("minishell: infile: No such file or directory: " \
+				, std_in + 2));
+	if (dup2(fd, STDIN_FILENO) < 0)
+		return (ft_error("minishell: Failed to create a pipe\n", NULL));
+	close (fd);
 	return (EXIT_SUCCESS);
 }
 
@@ -63,7 +59,7 @@ int	handle_output_redirection(char *std_o)
 	else
 		fd = open(std_o + 1, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	if (fd < 0)
-		return (ft_error("minishell: outfile: No such file or directory: " \
+		return (ft_error("minishell: outfile: error opening file: " \
 				, std_o + 2));
 	if (dup2(fd, STDOUT_FILENO) < 0)
 		return (ft_error("minishell: Failed to create a pipe\n", NULL));

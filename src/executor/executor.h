@@ -24,5 +24,6 @@ int		ft_error(char *errormessage, char *filename);
 int		handle_pipes(t_args *args, int pipefd[2], int fd_in);
 int		is_nofork_builtin(char **array);
 int		isbuiltin(char *str);
+int		handle_heredoc(char *delimit, char *filename);
 
 #endif

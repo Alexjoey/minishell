@@ -37,7 +37,7 @@ int	p_u_get_size_total(t_args *arg_list)
 
 //give index of the < << >> >, itll free remove, and rejoin the split so the
 //input after it wont just get removed and leak
-void	free_and_join_stdinorout_split(char **split, int	i)
+void	free_and_join_stdinorout_split(char **split, int i)
 {
 	free (split[i]);
 	free (split[i + 1]);
@@ -50,9 +50,31 @@ void	free_and_join_stdinorout_split(char **split, int	i)
 	split[i + 1] = NULL;
 }
 
+char	*gen_heredoc_filename(void)
+{
+	static int	i = 0;
+	char		*digit;
+	char		*ret;
+
+	ret = NULL;
+	digit = ft_itoa(++i);
+	if (!digit)
+	{
+		ft_error("malloc error in itoa", NULL);
+		return (NULL);
+	}
+	ret = ft_strjoin("<<.tmpheredoc", digit);
+	if (!ret)
+	{
+		ft_error("malloc error in strjoin", NULL);
+		return (NULL);
+	}
+	free (digit);
+	return (ret);
+}
+
 //made it readable and work properly for now
-//still has issues because < and << could have invalid input after or 
-//if theres input after < or << it will just disappear and leak
+//need to be able to check for invalid identifiers
 int	p_u_get_std_in(t_args *arg)
 {
 	int		i;
@@ -61,11 +83,17 @@ int	p_u_get_std_in(t_args *arg)
 	i = 0;
 	while (arg->split[i])
 	{
-		if ((!ft_strncmp(arg->split[i], "<", ft_strlen(arg->split[i])) ||
-			!ft_strncmp(arg->split[i], "<<", ft_strlen(arg->split[i])))
-			&& arg->split[i + 1])
+		if (!ft_strncmp(arg->split[i], "<", 2) && arg->split[i + 1])
 		{
 			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
+			free_and_join_stdinorout_split(arg->split, i);
+			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
+			i--;
+		}
+		else if (!ft_strncmp(arg->split[i], "<<", 3) && arg->split[i + 1])
+		{
+			tmp = gen_heredoc_filename();
+			handle_heredoc(arg->split[i + 1], tmp + 2);
 			free_and_join_stdinorout_split(arg->split, i);
 			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
 			i--;
@@ -84,7 +112,7 @@ int	p_u_get_std_out(t_args *arg)
 	i = 0;
 	while (arg->split[i])
 	{
-		if ((!ft_strncmp(arg->split[i], ">", ft_strlen(arg->split[i])) ||
+		if ((!ft_strncmp(arg->split[i], ">", ft_strlen(arg->split[i])) || \
 			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i])))
 			&& arg->split[i + 1])
 		{

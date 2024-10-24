@@ -109,8 +109,6 @@ int	wait_args(t_args *args)
 		waitpid(args->pid, &status, 0);
 		args = args->nxt;
 	}
-	if (WIFSIGNALED(status))
-		return (g_signum + 128);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	return (EXIT_FAILURE);
