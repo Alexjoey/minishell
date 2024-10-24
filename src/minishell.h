@@ -34,8 +34,8 @@ typedef struct s_tools
 
 //todo:
 //
-//restructuring the fork
 //multiple same redirections heredocs
+//need to handle making the heredoc in the parser, not executor
 //
 //stdin/out errorchecking in parser
 //pipe error checking in parser

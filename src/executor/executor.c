@@ -73,33 +73,42 @@ int	find_cmd(char **split, t_tools *tools)
 
 //makes a fork for each args, tries to do redirections and pipes
 //will return errornum
-int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
+int	make_fork(t_args *arg, t_tools *tools, int pipefd[2])
 {
-	int	pid;
-	int	status;
 	int	fd_in;
 
 	signal(SIGQUIT, sigquit_handler);
-	if (args->prev)
+	if (arg->prev)
 		fd_in = pipefd[0];
-	if (args->nxt)
+	if (arg->nxt)
 		pipe(pipefd);
-	pid = fork();
-	if (pid < 0)
+	arg->pid = fork();
+	if (arg->pid < 0)
 		return (ft_error("minishell: Failed to create fork", NULL));
-	if (pid == 0)
+	if (arg->pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
-		if (handle_pipes(args, pipefd, fd_in) == EXIT_FAILURE)
+		if (handle_pipes(arg, pipefd, fd_in) == EXIT_FAILURE)
 			exit (1);
-		find_cmd(args->split, tools);
+		find_cmd(arg->split, tools);
 	}
 	signal(SIGINT, sigint_fork_handler);
-	waitpid(pid, &status, 0);
-	if (args->prev)
+	if (arg->prev)
 		close(fd_in);
-	if (args->nxt)
+	if (arg->nxt)
 		close(pipefd[1]);
+	return (EXIT_FAILURE);
+}
+
+int	wait_args(t_args *args)
+{
+	int	status;
+
+	while (args)
+	{
+		waitpid(args->pid, &status, 0);
+		args = args->nxt;
+	}
 	if (WIFSIGNALED(status))
 		return (g_signum + 128);
 	if (WIFEXITED(status))
@@ -108,19 +117,23 @@ int	make_fork(t_args *args, t_tools *tools, int pipefd[2])
 }
 
 //
-int	execute(t_args *args, t_tools *tools)
+void	execute(t_args *args, t_tools *tools)
 {
 	int		pipefd[2];
 
 	if (tools->parser->x_args == 1 && is_nofork_builtin(args->split) == true)
 	{
 		tools->errornum = do_builtin(tools, args->split);
-		return (0);
+		return ;
 	}
-	while (args)
+	else
 	{
-		tools->errornum = make_fork(args, tools, pipefd);
-		args = args->nxt;
+		while (args)
+		{
+			make_fork(args, tools, pipefd);
+			args = args->nxt;
+		}
+		tools->errornum = wait_args(tools->parser->args_start);
 	}
-	return (0);
+	return ;
 }

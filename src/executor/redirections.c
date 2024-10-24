@@ -29,8 +29,6 @@ int	handle_heredoc(char *d)
 		line = readline("> ");
 	}
 	free (line);
-	close (fd);
-	fd = open(".tmpheredoc", O_RDONLY);
 	if (dup2(fd, STDIN_FILENO) < 0)
 		return (ft_error("minishell: Failed to create a pipe", NULL));
 	close (fd);
@@ -43,7 +41,7 @@ int	handle_input_redirection(char *std_in)
 
 	if (ft_strncmp("<<", std_in, 2) != 0)
 	{
-		fd = open(std_in + 2, O_RDONLY);
+		fd = open(std_in + 1, O_RDONLY);
 		if (fd < 0)
 			return (ft_error("minishell: infile: No such file or directory: " \
 					, std_in + 1));

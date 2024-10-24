@@ -55,20 +55,18 @@ void	free_and_join_stdinorout_split(char **split, int	i)
 //if theres input after < or << it will just disappear and leak
 int	p_u_get_std_in(t_args *arg)
 {
-	int	i;
+	int		i;
 	char	*tmp;
-	char	**split;
 
 	i = 0;
-	split = arg->split;
-	while (split[i])
+	while (arg->split[i])
 	{
-		if ((!ft_strncmp(split[i], "<", ft_strlen(split[i])) ||
-			!ft_strncmp(split[i], "<<", ft_strlen(split[i])))
-			&& split[i + 1])
+		if ((!ft_strncmp(arg->split[i], "<", ft_strlen(arg->split[i])) ||
+			!ft_strncmp(arg->split[i], "<<", ft_strlen(arg->split[i])))
+			&& arg->split[i + 1])
 		{
-			tmp = ft_strjoin(split[i], split[i + 1]);
-			free_and_join_stdinorout_split(split, i);
+			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
+			free_and_join_stdinorout_split(arg->split, i);
 			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
 			i--;
 		}
@@ -78,21 +76,21 @@ int	p_u_get_std_in(t_args *arg)
 }
 
 //need to be able to handle no space inbetween
-int	p_u_get_std_out(t_args *args)
+int	p_u_get_std_out(t_args *arg)
 {
 	int		i;
 	char	*tmp;
 
 	i = 0;
-	while (args->split[i])
+	while (arg->split[i])
 	{
-		if ((!ft_strncmp(args->split[i], ">", ft_strlen(args->split[i])) ||
-			!ft_strncmp(args->split[i], ">>", ft_strlen(args->split[i])))
-			&& args->split[i + 1])
+		if ((!ft_strncmp(arg->split[i], ">", ft_strlen(arg->split[i])) ||
+			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i])))
+			&& arg->split[i + 1])
 		{
-			tmp = ft_strjoin(args->split[i], args->split[i + 1]);
-			free_and_join_stdinorout_split(args->split, i);
-			ft_lstadd_back(&args->std_o, ft_lstnew(tmp));
+			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
+			free_and_join_stdinorout_split(arg->split, i);
+			ft_lstadd_back(&arg->std_o, ft_lstnew(tmp));
 			i--;
 		}
 		i++;
