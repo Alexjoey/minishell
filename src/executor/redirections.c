@@ -6,7 +6,7 @@
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 14:09:34 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/22 14:09:36 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/25 00:58:05 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,25 @@ int	handle_heredoc(char *delimit, char *filename)
 	char	*line;
 	int		fd;
 
+	signal(SIGINT, sigint_heredoc_handler);
 	fd = open(filename, O_RDWR | O_TRUNC | O_CREAT, S_IRUSR | S_IWUSR);
 	line = readline("> ");
 	while (ft_strncmp(delimit, line, ft_strlen(delimit)) != 0)
 	{
 		if (!line)
-		{
 			ft_error("warning: delimited by eof instead of desired:", delimit);
+		if (g_signum != 0 || !line)
 			break ;
-		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free (line);
 		line = readline("> ");
 	}
+	signal(SIGINT, sigint_handler);
 	free (line);
 	close (fd);
+	if (g_signum != 0)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

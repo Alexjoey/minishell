@@ -6,22 +6,14 @@
 /*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:36:11 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/15 13:36:36 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/25 01:00:13 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <unistd.h>
 
 //line = NULL only happens if ctrl-d is pressed,
 //which makes this function run, free and exit minshell
-int	free_tools(t_tools *tools)
-{
-	free_array(tools->envp);
-	free (tools);
-	rl_clear_history();
-	return (0);
-}
 
 void	sigint_handler(int signal)
 {
@@ -46,8 +38,15 @@ void	sigint_fork_handler(int signal)
 	g_signum = signal;
 }
 
+//barely know why but this makes the thing work man
+int	event(void)
+{
+	return (EXIT_SUCCESS);
+}
+
 void	init_signals(void)
 {
+	rl_event_hook = event;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 }

@@ -76,7 +76,7 @@ static int	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 		}
 		idx++;
 	}
-	if (!p_u_get_std_out(new) || !p_u_get_std_in(new))
+	if (p_u_get_std_out(new) || p_u_get_std_in(new))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
