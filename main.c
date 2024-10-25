@@ -42,6 +42,11 @@ void	reset_parser(t_pars_start *parser)
 {
 	t_args	*args;
 
+	if (!parser)
+	{
+		free (parser);
+		return ;
+	}
 	args = parser->args_start;
 	while (args)
 	{
