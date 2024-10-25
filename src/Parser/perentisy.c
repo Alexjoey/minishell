@@ -26,7 +26,7 @@ static	char	*ft_charaddbackfree(char *str, char c)
 		ret[i] = str[i];
 		i++;
 	}
-	str[i] = c;
+	ret[i] = c;
 	free (str);
 	return ret;
 }
