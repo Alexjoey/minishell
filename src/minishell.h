@@ -30,6 +30,7 @@ typedef struct s_tools
 	char					**envp;
 	struct s_start			*parser;
 	int						errornum;
+	bool					pars_good;
 }	t_tools;
 
 //todo:
@@ -39,7 +40,7 @@ typedef struct s_tools
 //stdin/out errorchecking in parser
 //pipe error checking in parser
 //whitespace shit
-//communicate to executor to not execute if theres parser error
+//communicate to executor to not execute if theres parser error 
 //
 //will find the str starting with path inside of envp and return the index
 //returns -1 if nothing is found

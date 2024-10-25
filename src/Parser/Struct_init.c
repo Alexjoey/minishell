@@ -44,13 +44,11 @@ void	p_struct_arg_init(t_pars_start *line_i, t_args *arg_i)
 			arg_s = arg_s->nxt;
 		arg_s->nxt = ft_calloc(sizeof(t_args), 1);
 		p_struct_arg_setnull(arg_s->nxt);
-
 	}
 	else
 		arg_s = arg_i;
 	arg_s = ft_calloc(sizeof(t_args), 1);
 	p_struct_arg_setnull(arg_s);
-
 }
 
 /*
@@ -61,20 +59,15 @@ void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
 {
 	char	**split;
 	int		i;
-	//t_args	*tmp;
 
 	split = NULL;
-	//p_struct_arg_init(line_i, NULL);
 	split = ft_split(line, '|');
 	i = 0;
 	while (split[i])
 	{
 		if (!p_fil_inset_arg(line_i, split[i], tools))
-		{
-			/*ERROR MANAGEMENT if adding arg fails (malloc or unexpected arg)*/
-		}
+			return (parser_error(tools));
 		i++;
 	}
 	free(split);
-	i = 0;
 }

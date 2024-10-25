@@ -57,6 +57,10 @@ typedef struct s_start
 }	t_pars_start;
 
 t_pars_start	*parser_input(char *line, t_tools *tools);
+void			parser_error(t_tools *tools);
+
+void			p_perentisy_remove(t_args *arg, t_tools *tools);
+void			p_perentisy_check(t_args *arg, t_tools *tools);
 
 void			p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools);
 bool			p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool);

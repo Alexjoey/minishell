@@ -120,6 +120,8 @@ void	execute(t_args *args, t_tools *tools)
 {
 	int		pipefd[2];
 
+	if (!tools->pars_good)
+		return ;
 	if (tools->parser->x_args == 1 && is_nofork_builtin(args->split) == true)
 	{
 		tools->errornum = do_builtin(tools, args->split);
