@@ -121,20 +121,19 @@ void	execute(t_args *args, t_tools *tools)
 	int		pipefd[2];
 
 	if (!tools->pars_good)
+	{
+		tools->errornum = 1;
 		return ;
+	}
 	if (tools->parser->x_args == 1 && is_nofork_builtin(args->split) == true)
 	{
 		tools->errornum = do_builtin(tools, args->split);
 		return ;
 	}
-	else
+	else while (args)
 	{
-		while (args)
-		{
-			make_fork(args, tools, pipefd);
-			args = args->nxt;
-		}
-		tools->errornum = wait_args(tools->parser->args_start);
+		make_fork(args, tools, pipefd);
+		args = args->nxt;
 	}
-	return ;
+	tools->errornum = wait_args(tools->parser->args_start);
 }
