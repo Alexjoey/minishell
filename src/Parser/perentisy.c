@@ -21,14 +21,14 @@ static	char	*ft_charaddbackfree(char *str, char c)
 	if (!ret)
 		return (NULL);
 	i = 0;
-	while(str && str[i])
+	while (str && str[i])
 	{
 		ret[i] = str[i];
 		i++;
 	}
 	ret[i] = c;
 	free (str);
-	return ret;
+	return (ret);
 }
 
 static char	*p_perentisy_add(char *tmp, char c, bool *quote)
