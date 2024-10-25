@@ -12,34 +12,38 @@
 
 #include "../minishell.h"
 
-static char	*p_make_charp(char c, t_tools *tools)
+static	char	*ft_charaddbackfree(char *str, char c)
 {
-	char	*str;
+	int		i;
+	char	*ret;
 
-	str = (char *)malloc(2 * sizeof(char));
-	if (str == NULL)
-	{
-		parser_error(tools);
+	ret = ft_calloc(ft_strlen(str) + 2, sizeof(char));
+	if (!ret)
 		return (NULL);
+	i = 0;
+	while(str && str[i])
+	{
+		ret[i] = str[i];
+		i++;
 	}
-	str[0] = c;
-	str[1] = '\0';
-	return (str);
+	str[i] = c;
+	free (str);
+	return ret;
 }
 
-static char	*p_perentisy_add(char *tmp, char *c, bool *quote)
+static char	*p_perentisy_add(char *tmp, char c, bool *quote)
 {
 	if (*quote)
 	{
 		*quote = false;
-		tmp = ft_strjoinfree(tmp, c);
+		tmp = ft_charaddbackfree(tmp, c);
 		tmp = ft_strjoinfree(tmp, "\n");
 	}
 	else
 	{
 		*quote = true;
 		tmp = ft_strjoinfree(tmp, "\n");
-		tmp = ft_strjoinfree(tmp, c);
+		tmp = ft_charaddbackfree(tmp, c);
 	}
 	return (tmp);
 }
@@ -76,7 +80,6 @@ void	p_perentisy_check(t_args *arg, t_tools *tools)
 {
 	int		i;
 	char	*tmp;
-	char	*c;
 	bool	quote;
 
 	tmp = NULL;
@@ -84,16 +87,14 @@ void	p_perentisy_check(t_args *arg, t_tools *tools)
 	i = 0;
 	while (arg->str[i])
 	{
-		c = p_make_charp(arg->str[i], tools);
 		if (arg->str[i] == (char)39
 			|| ((arg->str[i] == (char)34) && !(arg->str[i - 1] == (char) 92)))
-			tmp = p_perentisy_add(tmp, c, &quote);
+			tmp = p_perentisy_add(tmp, arg->str[i], &quote);
 		else if (arg->str[i] == (char)32 && !quote)
 			tmp = ft_strjoinfree(tmp, "\n");
 		else
-			tmp = ft_strjoinfree(tmp, c);
+			tmp = ft_charaddbackfree(tmp, arg->str[i]);
 		i++;
-		free(c);
 		if (tmp == NULL)
 			return (parser_error(tools));
 	}
