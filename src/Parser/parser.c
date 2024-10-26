@@ -13,9 +13,10 @@
 #include "Parser.h"
 #include "../minishell.h"
 
-void	parser_error(t_tools *tools)
+void	parser_error(t_tools *tools, char *err)
 {
 	tools->pars_good = false;
+	ft_putendl_fd(err, STDERR_FILENO);
 	return ;
 }
 
@@ -29,7 +30,7 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 	while (new->split && new->split[++idx])
 		new->split[idx] = replace_dollarsigns(new->split[idx], tools);
 	if (p_u_get_std_out(new) || p_u_get_std_in(new))
-		return (parser_error(tools));
+		return (parser_error(tools, ""));
 	p_perentisy_remove(new->split);
 }
 
@@ -79,7 +80,7 @@ void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
 	while (split && split[i])
 	{
 		if (!p_fil_inset_arg(line_i, split[i], tools))
-			return (parser_error(tools));
+			return (parser_error(tools, ""));
 		i++;
 	}
 	free(split);
@@ -93,7 +94,7 @@ t_pars_start	*parser_input(char *line, t_tools *tools)
 	line_s = ft_calloc(sizeof(t_pars_start), 1);
 	if (line_s == NULL)
 	{
-		parser_error(tools);
+		parser_error(tools, "");
 		return (NULL);
 	}
 	p_line_s_init(line_s, line, tools);
