@@ -17,6 +17,7 @@ int	free_tools(t_tools *tools)
 	free_array(tools->envp);
 	free (tools);
 	rl_clear_history();
+	printf("exit\n");
 	return (0);
 }
 
