@@ -130,10 +130,13 @@ void	execute(t_args *args, t_tools *tools)
 		tools->errornum = do_builtin(tools, args->split);
 		return ;
 	}
-	else while (args)
+	else
 	{
-		make_fork(args, tools, pipefd);
-		args = args->nxt;
+		while (args)
+		{
+			make_fork(args, tools, pipefd);
+			args = args->nxt;
+		}
+		tools->errornum = wait_args(tools->parser->args_start);
 	}
-	tools->errornum = wait_args(tools->parser->args_start);
 }

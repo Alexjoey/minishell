@@ -6,34 +6,12 @@
 /*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 03:47:59 by tlaverge          #+#    #+#             */
-/*   Updated: 2024/10/03 17:39:50 by tlaverge         ###   ########.fr       */
+/*   Updated: 2024/10/26 17:09:59 by amylle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.h"
 #include "../minishell.h"
-/*List of functions that helps navigating the Struct*/
-//TBA
-
-int	p_u_get_size_total(t_args *arg_list)
-{
-	t_args	*temp;
-	int		i;
-
-	i = 0;
-	if (!(arg_list))
-		return (0);
-	if (!(arg_list->prev))
-		return (1);
-	while (arg_list->prev)
-		temp = arg_list->prev;
-	while (temp->nxt)
-	{
-		temp = temp->nxt;
-		i++;
-	}
-	return (i);
-}
 
 //give index of the < << >> >, itll free remove, and rejoin the split so the
 //input after it wont just get removed and leak
@@ -81,7 +59,7 @@ int	p_u_get_std_in(t_args *arg)
 	char	*tmp;
 
 	i = 0;
-	while (arg->split[i])
+	while (arg->split && arg->split[i])
 	{
 		if (!ft_strncmp(arg->split[i], "<", 2) && arg->split[i + 1])
 		{
@@ -110,7 +88,7 @@ int	p_u_get_std_out(t_args *arg)
 	char	*tmp;
 
 	i = 0;
-	while (arg->split[i])
+	while (arg->split && arg->split[i])
 	{
 		if ((!ft_strncmp(arg->split[i], ">", ft_strlen(arg->split[i])) || \
 			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i])))

@@ -12,92 +12,44 @@
 
 #include "../minishell.h"
 
-static	char	*ft_charaddbackfree(char *str, char c)
+//given index i, will shift everything to the left starting from i,
+//basically just removing it
+static void	remove_char_from_str(char *str, int i)
 {
-	int		i;
-	char	*ret;
-
-	ret = ft_calloc(ft_strlen(str) + 2, sizeof(char));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	while (str && str[i])
+	while (str[i])
 	{
-		ret[i] = str[i];
+		str[i] = str[i + 1];
 		i++;
 	}
-	ret[i] = c;
-	free (str);
-	return (ret);
 }
 
-static char	*p_perentisy_add(char *tmp, char c, bool *quote)
-{
-	if (*quote)
-	{
-		*quote = false;
-		tmp = ft_charaddbackfree(tmp, c);
-		tmp = ft_strjoinfree(tmp, "\n");
-	}
-	else
-	{
-		*quote = true;
-		tmp = ft_strjoinfree(tmp, "\n");
-		tmp = ft_charaddbackfree(tmp, c);
-	}
-	return (tmp);
-}
-
-void	p_perentisy_remove(t_args *arg, t_tools *tools)
+//given a split, will remove parentheses
+//if theres only 1 parenthesis itll just remove that one and move onto next str
+void	p_perentisy_remove(char	**split)
 {
 	int		i;
 	int		j;
-	char	*new;
+	int		tmp;
 
-	i = 0;
-	while (arg->split[i])
+	i = -1;
+	while (split && split[++i])
 	{
-		if ((arg->split[i][0] == (char)34) || (arg->split[i][0] == (char) 39))
+		j = 0;
+		while (split[i][j])
 		{
-			j = 1;
-			new = (char *)ft_calloc(ft_strlen(arg->split[i]) - 1, sizeof(char));
-			if (new == NULL)
-				return (parser_error(tools));
-			while (ft_strlen(arg->split[i]) - 1 > (size_t)j)
+			if (split[i][j] == '\"' || split[i][j] == '\'')
 			{
-				new[j - 1] = arg->split[i][j];
-				j++;
+				if (!ft_strchr(&split[i][j + 1], split[i][j]))
+				{
+					remove_char_from_str(split[i], j);
+					break ;
+				}
+				tmp = ft_strchr(&split[i][j + 1], split[i][j]) - &split[i][j];
+				remove_char_from_str(split[i], j);
+				remove_char_from_str(split[i], tmp + 1);
+				j += tmp - 2;
 			}
-			new[j] = '\0';
-			free(arg->split[i]);
-			arg->split[i] = new;
+			j++;
 		}
-		i++;
 	}
-}
-
-void	p_perentisy_check(t_args *arg, t_tools *tools)
-{
-	int		i;
-	char	*tmp;
-	bool	quote;
-
-	tmp = NULL;
-	quote = false;
-	i = 0;
-	while (arg->str[i])
-	{
-		if (arg->str[i] == (char)39
-			|| ((arg->str[i] == (char)34) && !(arg->str[i - 1] == (char) 92)))
-			tmp = p_perentisy_add(tmp, arg->str[i], &quote);
-		else if (arg->str[i] == (char)32 && !quote)
-			tmp = ft_strjoinfree(tmp, "\n");
-		else
-			tmp = ft_charaddbackfree(tmp, arg->str[i]);
-		i++;
-		if (tmp == NULL)
-			return (parser_error(tools));
-	}
-	arg->split = ft_split(tmp, (char) 10);
-	free(tmp);
 }

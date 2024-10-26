@@ -10,12 +10,86 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Parser.h"
 #include "../minishell.h"
 
 void	parser_error(t_tools *tools)
 {
 	tools->pars_good = false;
 	return ;
+}
+
+static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
+{
+	int		idx;
+
+	idx = 0;
+	new->str = arg;
+	new->split = ft_split_ignoring_parentheses(arg, ' ');
+	while (new->split && new->split[idx])
+	{
+		if (ft_strchr(new->split[idx], '$')
+			&& !(ft_strchr(new->split[idx], (char) 39)))
+		{
+			new->split[idx] = replace_dollarsigns(new->split[idx], tools);
+		}
+		idx++;
+	}
+	if (p_u_get_std_out(new) || p_u_get_std_in(new))
+		return (parser_error(tools));
+	p_perentisy_remove(new->split);
+}
+
+/*
+	fills all the needed args
+	WIP need to add Maloc shit all temp code for now
+	Will add a 'new' link in the list in the last pos
+*/
+bool	p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool)
+{
+	t_args			*curr;
+	t_args			*new;
+
+	new = ft_calloc(1, sizeof(t_args));
+	if (!new)
+		return (false);
+	if (line_i->args_start)
+	{
+		curr = line_i->args_start;
+		while (curr->nxt)
+			curr = curr->nxt;
+		curr->nxt = new;
+		new->prev = curr;
+	}
+	else
+		line_i->args_start = new;
+	new->init_s = line_i;
+	new->index = line_i->x_args;
+	p_fil_type_arg(new, arg, tool);
+	if (new->split)
+		line_i->x_args += 1;
+	return (tool->pars_good);
+}
+
+/*
+	init phase of the executor struct
+	Null all needed vars to then fill them with precious DATA :D
+*/
+void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
+{
+	char	**split;
+	int		i;
+
+	split = NULL;
+	split = ft_split_ignoring_parentheses(line, '|');
+	i = 0;
+	while (split && split[i])
+	{
+		if (!p_fil_inset_arg(line_i, split[i], tools))
+			return (parser_error(tools));
+		i++;
+	}
+	free(split);
 }
 
 t_pars_start	*parser_input(char *line, t_tools *tools)
