@@ -19,7 +19,8 @@ static char	*strdup_till_spaceordollar(char *str)
 	int		len;
 
 	len = 0;
-	while (str[len] && str[len] != ' ' && str[len] != '$')
+	while (str[len] && str[len] != ' ' && str[len] != '$'\
+		&& str[len] != '\"' && str[len] != '\'')
 		len++;
 	ret = ft_calloc(sizeof(char), (len + 1));
 	if (!ret)
@@ -51,6 +52,7 @@ static char	*sub_dollar(char *str, char *eofstr, int envp_i, t_tools *tools)
 	}
 	else
 		ret = ft_strjoin(str, eofstr);
+	free (str);
 	return (ret);
 }
 
@@ -61,24 +63,24 @@ char	*replace_dollarsigns(char *str, t_tools *tools)
 	int		envp_i;
 	char	*path_var;
 	char	*endofstr;
-	char	*ret;
+	int		in_single_quote;
 
 	i = -1;
-	ret = NULL;
+	in_single_quote = 0;
 	while (str && str[++i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '\'')
+			in_single_quote = !in_single_quote;
+		if (str[i] == '$' && in_single_quote == 0)
 		{
 			path_var = strdup_till_spaceordollar(&str[i + 1]);
 			envp_i = find_envp_index(tools->envp, path_var);
 			endofstr = &str[i] + 1 + ft_strlen(path_var);
 			free (path_var);
 			str[i] = '\0';
-			ret = sub_dollar(str, endofstr, envp_i, tools);
-			free (str);
-			str = ret;
+			str = sub_dollar(str, endofstr, envp_i, tools);
 			i = -1;
 		}
 	}
-	return (ret);
+	return (str);
 }

@@ -23,18 +23,11 @@ static void	p_fil_type_arg(t_args *new, char *arg, t_tools *tools)
 {
 	int		idx;
 
-	idx = 0;
 	new->str = arg;
 	new->split = ft_split_ignoring_parentheses(arg, ' ');
-	while (new->split && new->split[idx])
-	{
-		if (ft_strchr(new->split[idx], '$')
-			&& !(ft_strchr(new->split[idx], (char) 39)))
-		{
-			new->split[idx] = replace_dollarsigns(new->split[idx], tools);
-		}
-		idx++;
-	}
+	idx = -1;
+	while (new->split && new->split[++idx])
+		new->split[idx] = replace_dollarsigns(new->split[idx], tools);
 	if (p_u_get_std_out(new) || p_u_get_std_in(new))
 		return (parser_error(tools));
 	p_perentisy_remove(new->split);

@@ -46,7 +46,7 @@ void	p_perentisy_remove(char	**split)
 				}
 				tmp = ft_strchr(&split[i][j + 1], split[i][j]) - &split[i][j];
 				remove_char_from_str(split[i], j);
-				remove_char_from_str(split[i], tmp + 1);
+				remove_char_from_str(split[i], j + tmp - 1);
 				j += tmp - 2;
 			}
 			j++;
