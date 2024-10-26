@@ -71,7 +71,8 @@ char	*replace_dollarsigns(char *str, t_tools *tools)
 	{
 		if (str[i] == '\'')
 			in_single_quote = !in_single_quote;
-		if (str[i] == '$' && in_single_quote == 0)
+		if (str[i] == '$' && in_single_quote == 0 &&  str[i + 1] &&\
+			str[i + 1] != '\"' && str[i + 1] != '\'')
 		{
 			path_var = strdup_till_spaceordollar(&str[i + 1]);
 			envp_i = find_envp_index(tools->envp, path_var);
