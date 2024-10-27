@@ -63,7 +63,7 @@ void			p_perentisy_remove(char **split);
 void			p_perentisy_check(t_args *arg, t_tools *tools);
 
 void			p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools);
-bool			p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool);
+void			p_fil_inset_arg(t_pars_start *line_i, char *arg, t_tools *tool);
 
 void			p_struct_arg_init(t_pars_start *line_i, t_args *arg_i);
 

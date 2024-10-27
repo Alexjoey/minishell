@@ -41,21 +41,16 @@ static int	ft_strchrparenthesis_int(char *str, char c)
 bool	p_syntax_first_check(char *str, t_tools *tools)
 {
 	int		i;
-	char	*tmp;
 
 	i = 0;
 	while (str[i] == ' ' || str[i] == '\n')
 		i++;
 	if (str[i] == '|')
-		parser_error(tools, "minishell: parse error near '|'");
+		parser_error(tools, "minishell: parse error near '|'\n");
 	if (str[i + 1] && str[i])
 	{
 		i += ft_strchrparenthesis_int(str, '|') + 1;
-		tmp = ft_substr(str, i, ft_strlen(str) - i);
-		free(str);
-		p_syntax_first_check(tmp, tools);
+		p_syntax_first_check(&str[i], tools);
 	}
-	else
-		free(str);
 	return (tools->pars_good);
 }
