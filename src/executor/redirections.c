@@ -78,17 +78,15 @@ int	handle_output_redirection(char *std_o)
 
 int	handle_pipes(t_args *args, int pipefd[2], int fd_in)
 {
-	if (args->prev)
-	{
-		if (dup2(fd_in, STDIN_FILENO) < 0)
-			return (ft_error("minishell: Failed to create a pipe\n", NULL));
+	if (args->prev && dup2(fd_in, STDIN_FILENO) < 0)
+		return (ft_error("minishell: Failed to create a pipe\n", NULL));
+	else if (args->prev)
 		close(fd_in);
-	}
-	close(pipefd[0]);
 	if (args->nxt)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
+		close(pipefd[0]);
 		close(pipefd[1]);
 	}
 	while (args->std_in)

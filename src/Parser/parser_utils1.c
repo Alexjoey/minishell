@@ -64,7 +64,7 @@ int	p_u_get_std_in(t_args *arg)
 		if (!ft_strncmp(arg->split[i], "<", 2))
 		{
 			if (!arg->split[i + 1])
-				return (ft_error("minishell: parse error near ", arg->split[i]));
+				return (ft_error("parse error near ", arg->split[i]));
 			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
 			free_and_join_stdinorout_split(arg->split, i--);
 			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
@@ -72,7 +72,7 @@ int	p_u_get_std_in(t_args *arg)
 		else if (!ft_strncmp(arg->split[i], "<<", 3))
 		{
 			if (!arg->split[i + 1])
-				return (ft_error("minishell: parse error near ", arg->split[i]));
+				return (ft_error("parse error near ", arg->split[i]));
 			tmp = gen_heredoc_filename();
 			handle_heredoc(arg->split[i + 1], tmp + 2);
 			free_and_join_stdinorout_split(arg->split, i--);
@@ -95,7 +95,7 @@ int	p_u_get_std_out(t_args *arg)
 			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i]))))
 		{
 			if (!arg->split[i + 1])
-				return (ft_error("minishell: parse error near ", arg->split[i]));
+				return (ft_error("parse error near ", arg->split[i]));
 			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
 			free_and_join_stdinorout_split(arg->split, i);
 			ft_lstadd_back(&arg->std_o, ft_lstnew(tmp));
