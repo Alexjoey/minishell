@@ -84,6 +84,7 @@ int	handle_pipes(t_args *args, int pipefd[2], int fd_in)
 			return (ft_error("minishell: Failed to create a pipe\n", NULL));
 		close(fd_in);
 	}
+	close(pipefd[0]);
 	if (args->nxt)
 	{
 		if (dup2(pipefd[1], STDOUT_FILENO) < 0)
