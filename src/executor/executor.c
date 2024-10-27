@@ -98,7 +98,7 @@ int	make_fork(t_args *arg, t_tools *tools, int pipefd[2])
 		close(fd_in);
 	if (arg->nxt)
 		close(pipefd[1]);
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	wait_args(t_args *args)

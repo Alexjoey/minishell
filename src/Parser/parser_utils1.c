@@ -58,25 +58,26 @@ int	p_u_get_std_in(t_args *arg)
 	int		i;
 	char	*tmp;
 
-	i = 0;
-	while (arg->split && arg->split[i])
+	i = -1;
+	while (arg->split && arg->split[++i])
 	{
-		if (!ft_strncmp(arg->split[i], "<", 2) && arg->split[i + 1])
+		if (!ft_strncmp(arg->split[i], "<", 2))
 		{
+			if (!arg->split[i + 1])
+				return (ft_error("minishell: parse error near ", arg->split[i]));
 			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
-			free_and_join_stdinorout_split(arg->split, i);
+			free_and_join_stdinorout_split(arg->split, i--);
 			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
-			i--;
 		}
-		else if (!ft_strncmp(arg->split[i], "<<", 3) && arg->split[i + 1])
+		else if (!ft_strncmp(arg->split[i], "<<", 3))
 		{
+			if (!arg->split[i + 1])
+				return (ft_error("minishell: parse error near ", arg->split[i]));
 			tmp = gen_heredoc_filename();
 			handle_heredoc(arg->split[i + 1], tmp + 2);
-			free_and_join_stdinorout_split(arg->split, i);
+			free_and_join_stdinorout_split(arg->split, i--);
 			ft_lstadd_back(&arg->std_in, ft_lstnew(tmp));
-			i--;
 		}
-		i++;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -91,9 +92,10 @@ int	p_u_get_std_out(t_args *arg)
 	while (arg->split && arg->split[i])
 	{
 		if ((!ft_strncmp(arg->split[i], ">", ft_strlen(arg->split[i])) || \
-			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i])))
-			&& arg->split[i + 1])
+			!ft_strncmp(arg->split[i], ">>", ft_strlen(arg->split[i]))))
 		{
+			if (!arg->split[i + 1])
+				return (ft_error("minishell: parse error near ", arg->split[i]));
 			tmp = ft_strjoin(arg->split[i], arg->split[i + 1]);
 			free_and_join_stdinorout_split(arg->split, i);
 			ft_lstadd_back(&arg->std_o, ft_lstnew(tmp));
