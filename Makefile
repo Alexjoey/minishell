@@ -16,7 +16,7 @@ OBJ_DIR	= ./obj
 
 SRCS	= main.c src/executor/executor.c ./src/builtins/echo_builtin.c ./src/builtins/cd_builtin.c \
 		  ./src/builtins/pwd_builtin.c ./src/builtins/do_builtin.c ./src/builtins/env_builtin.c \
-		  ./src/builtins/exit_builtin.c ./src/Parser/parser_utils1.c ./src/Parser/parser.c \
+		  ./src/builtins/exit_builtin.c ./src/Parser/parser_utils1.c ./src/Parser/parser.c  ./src/Parser/Syntax_check.c \
 		  ./src/builtins/unset_builtin.c ./src/builtins/export_builtin.c ./src/Parser/expand_dollarsigns.c\
 		  ./src/executor/redirections.c ./src/executor/executor_utils.c ./src/executor/signals2.c\
 		  ./src/Parser/perentisy.c ./src/Parser/ft_splitparenthesis.c ./src/executor/signals.c

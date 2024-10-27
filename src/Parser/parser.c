@@ -75,12 +75,13 @@ void	p_line_s_init(t_pars_start *line_i, char *line, t_tools *tools)
 	int		i;
 
 	split = NULL;
-	split = ft_split_ignoring_parentheses(line, '|');
+	if (p_syntax_first_check(ft_strdup(line), tools))
+		split = ft_split_ignoring_parentheses(line, '|');
 	i = 0;
 	while (split && split[i])
 	{
 		if (!p_fil_inset_arg(line_i, split[i], tools))
-			return (parser_error(tools, ""));
+			return (parser_error(tools, "minishell: parse error arg fail"));
 		i++;
 	}
 	free(split);
@@ -94,7 +95,7 @@ t_pars_start	*parser_input(char *line, t_tools *tools)
 	line_s = ft_calloc(sizeof(t_pars_start), 1);
 	if (line_s == NULL)
 	{
-		parser_error(tools, "");
+		parser_error(tools, "minishell: parse error parser malloc fail");
 		return (NULL);
 	}
 	p_line_s_init(line_s, line, tools);

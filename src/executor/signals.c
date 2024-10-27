@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 13:36:11 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/25 01:00:13 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/27 19:06:39 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	sigint_handler(int signal)
 void	sigquit_handler(int signal)
 {
 	ft_putstr_fd("quit (core dumped) (not rlly im lying)", STDERR_FILENO);
-	ft_putnbr_fd(signal, STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);
 	g_signum = signal;
 }

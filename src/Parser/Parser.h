@@ -72,4 +72,7 @@ int				p_u_get_std_in(t_args *arg);
 int				p_u_get_std_out(t_args *arg);
 char			*replace_dollarsigns(char *str, t_tools *tools);
 char			**ft_split_ignoring_parentheses(char *line, char c);
+
+bool			p_syntax_first_check(char *str, t_tools *tools);
+
 #endif

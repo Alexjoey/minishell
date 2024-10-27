@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollarsigns.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amylle <alexm@live.be>                     +#+  +:+       +#+        */
+/*   By: tlaverge <tlaverge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 08:47:29 by amylle            #+#    #+#             */
-/*   Updated: 2024/10/21 08:48:05 by amylle           ###   ########.fr       */
+/*   Updated: 2024/10/27 19:01:07 by tlaverge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*replace_dollarsigns(char *str, t_tools *tools)
 	{
 		if (str[i] == '\'')
 			in_single_quote = !in_single_quote;
-		if (str[i] == '$' && in_single_quote == 0 &&  str[i + 1] &&\
+		if (str[i] == '$' && in_single_quote == 0 && str[i + 1] && \
 			str[i + 1] != '\"' && str[i + 1] != '\'')
 		{
 			path_var = strdup_till_spaceordollar(&str[i + 1]);
